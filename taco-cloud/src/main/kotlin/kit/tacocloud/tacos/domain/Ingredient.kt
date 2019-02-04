@@ -10,5 +10,7 @@ enum class Type {
     WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
 }
 
-class Taco
+class Taco {
+    var name: String? = null
+}
 
