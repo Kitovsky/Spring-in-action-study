@@ -6,6 +6,7 @@ import kit.tacocloud.tacos.domain.Type
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/design")
@@ -35,5 +36,12 @@ class DesignTacoController {
         }
         model.addAttribute("design", Taco())
         return "design"
+    }
+
+    @PostMapping
+    fun processDesign(design: Taco): String {
+        log.info("Processing design: {}", design)
+
+        return "redirect:/orders/current"
     }
 }

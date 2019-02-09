@@ -10,7 +10,8 @@ enum class Type {
     WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
 }
 
-class Taco {
-    var name: String? = null
-}
+data class Taco (
+    var name: String? = null,
+    val ingredients: List<String> = listOf()
+)
 
