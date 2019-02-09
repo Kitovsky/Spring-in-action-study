@@ -5,9 +5,11 @@ import kit.tacocloud.tacos.domain.Taco
 import kit.tacocloud.tacos.domain.Type
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import javax.validation.Valid
 
 @RequestMapping("/design")
 @Controller
@@ -39,7 +41,10 @@ class DesignTacoController {
     }
 
     @PostMapping
-    fun processDesign(design: Taco): String {
+    fun processDesign(@Valid design: Taco, errors: Errors): String {
+        if (errors.hasErrors()) {
+            return "design"
+        }
         log.info("Processing design: {}", design)
 
         return "redirect:/orders/current"
