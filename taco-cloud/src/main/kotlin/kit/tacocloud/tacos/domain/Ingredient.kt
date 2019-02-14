@@ -1,6 +1,7 @@
 package kit.tacocloud.tacos.domain
 
 import org.hibernate.validator.constraints.CreditCardNumber
+import java.sql.Date
 import javax.validation.constraints.Digits
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -11,13 +12,15 @@ data class Ingredient(
         val id: String,
         val name: String,
         val type: Type
-)
-
-enum class Type {
-    WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
+) {
+    enum class Type {
+        WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
+    }
 }
 
 data class Taco(
+        var id: Long? = null,
+        var createdAt: Date? = null,
         @field:NotNull
         @field:Size(min = 5, message = "Name must be at least 5 characters long")
         var name: String? = null,
@@ -26,6 +29,8 @@ data class Taco(
 )
 
 data class Order(
+        var id: Long? = null,
+        var placedAt: Date? = null,
         @field:NotBlank(message = "Name is required")
         var name: String = "",
         @field:NotBlank(message = "Street is required")

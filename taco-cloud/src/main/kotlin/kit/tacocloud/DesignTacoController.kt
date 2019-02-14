@@ -2,7 +2,8 @@ package kit.tacocloud
 
 import kit.tacocloud.tacos.domain.Ingredient
 import kit.tacocloud.tacos.domain.Taco
-import kit.tacocloud.tacos.domain.Type
+import kit.tacocloud.tacos.repositories.IngredientRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
@@ -13,26 +14,29 @@ import javax.validation.Valid
 
 @RequestMapping("/design")
 @Controller
-class DesignTacoController {
+class DesignTacoController(
+        @Autowired private val ingredientRepo: IngredientRepository
+) {
     companion object {
         val log by logger()
-        val ingredients = listOf(
-                Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
-                Ingredient("COTO", "Corn Tortilla", Type.WRAP),
-                Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
-                Ingredient("CARN", "Carnitas", Type.PROTEIN),
-                Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES),
-                Ingredient("LETC", "Lettuce", Type.VEGGIES),
-                Ingredient("CHED", "Cheddar", Type.CHEESE),
-                Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
-                Ingredient("SLSA", "Salsa", Type.SAUCE),
-                Ingredient("SRCR", "Sour Cream", Type.SAUCE)
-        )
+        /*val ingredients = listOf(
+                Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP),
+                Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
+                Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN),
+                Ingredient("CARN", "Carnitas", Ingredient.Type.PROTEIN),
+                Ingredient("TMTO", "Diced Tomatoes", Ingredient.Type.VEGGIES),
+                Ingredient("LETC", "Lettuce", Ingredient.Type.VEGGIES),
+                Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE),
+                Ingredient("JACK", "Monterrey Jack", Ingredient.Type.CHEESE),
+                Ingredient("SLSA", "Salsa", Ingredient.Type.SAUCE),
+                Ingredient("SRCR", "Sour Cream", Ingredient.Type.SAUCE)
+        )*/
     }
 
     @GetMapping
     fun showDesignForm(model: Model): String {
-        Type.values().forEach { type ->
+        val ingredients = ingredientRepo.findAll()
+        Ingredient.Type.values().forEach { type ->
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.filter { it.type == type })
         }
