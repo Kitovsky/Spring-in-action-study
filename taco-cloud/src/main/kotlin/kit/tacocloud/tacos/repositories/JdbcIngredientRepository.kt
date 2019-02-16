@@ -19,7 +19,7 @@ class JdbcIngredientRepository(
                     ::mapRowToIngredient, arrayOf(id))
 
     override fun save(ingredient: Ingredient): Ingredient {
-        jdbc.update("insert  into Ingredient (id, name, type) values (?, ?, ?)",
+        jdbc.update("insert into Ingredient (id, name, type) values (?, ?, ?)",
                 ingredient.id,
                 ingredient.name,
                 ingredient.type.toString())

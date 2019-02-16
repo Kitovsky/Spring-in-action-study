@@ -1,21 +1,27 @@
 package kit.tacocloud
 
 import kit.tacocloud.tacos.domain.Ingredient
+import kit.tacocloud.tacos.domain.Order
 import kit.tacocloud.tacos.domain.Taco
 import kit.tacocloud.tacos.repositories.IngredientRepository
+import kit.tacocloud.tacos.repositories.TacoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.SessionAttributes
 import javax.validation.Valid
 
 @RequestMapping("/design")
 @Controller
+@SessionAttributes("order")
 class DesignTacoController(
-        @Autowired private val ingredientRepo: IngredientRepository
+        @Autowired private val ingredientRepo: IngredientRepository,
+        @Autowired private val tacoRepo: TacoRepository
 ) {
     companion object {
         val log by logger()
@@ -33,6 +39,12 @@ class DesignTacoController(
         )*/
     }
 
+    @ModelAttribute(name = "order")
+    fun order() = Order()
+
+    @ModelAttribute(name = "taco")
+    fun taco() = Taco()
+
     @GetMapping
     fun showDesignForm(model: Model): String {
         val ingredients = ingredientRepo.findAll()
@@ -45,12 +57,14 @@ class DesignTacoController(
     }
 
     @PostMapping
-    fun processDesign(@Valid design: Taco, errors: Errors): String {
+    fun processDesign(@Valid taco: Taco, errors: Errors,
+                      @ModelAttribute order: Order): String {
         if (errors.hasErrors()) {
             return "design"
         }
-        log.info("Processing design: {}", design)
-
+        log.info("Processing taco: {}", taco)
+        val saved = tacoRepo.save(taco)
+        order.addTaco(saved)
         return "redirect:/orders/current"
     }
 }

@@ -1,7 +1,7 @@
 package kit.tacocloud.tacos.domain
 
 import org.hibernate.validator.constraints.CreditCardNumber
-import java.sql.Date
+import java.util.Date
 import javax.validation.constraints.Digits
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -20,17 +20,17 @@ data class Ingredient(
 
 data class Taco(
         var id: Long? = null,
-        var createdAt: Date? = null,
+        var createdAt: Date = Date(),
         @field:NotNull
         @field:Size(min = 5, message = "Name must be at least 5 characters long")
         var name: String? = null,
         @field:Size(min = 1, message = "You must choose at least 1 ingredient")
-        val ingredients: List<String> = listOf()
+        val ingredients: List<Ingredient> = listOf()
 )
 
 data class Order(
         var id: Long? = null,
-        var placedAt: Date? = null,
+        var placedAt: Date = Date(),
         @field:NotBlank(message = "Name is required")
         var name: String = "",
         @field:NotBlank(message = "Street is required")
@@ -47,6 +47,12 @@ data class Order(
                 message = "Must be formatted MM/YY")
         var ccExpiration: String = "",
         @field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
-        val ccCVV: String = ""
-)
+        val ccCVV: String = "",
+        @field:Size(min = 1, message = "You must choose at least 1 taco")
+        val tacos: MutableList<Taco> = mutableListOf()
+) {
+    fun addTaco(taco: Taco) {
+        tacos.add(taco)
+    }
+}
 
