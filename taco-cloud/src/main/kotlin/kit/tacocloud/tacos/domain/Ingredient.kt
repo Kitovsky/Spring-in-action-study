@@ -1,6 +1,7 @@
 package kit.tacocloud.tacos.domain
 
 import org.hibernate.validator.constraints.CreditCardNumber
+import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
 import javax.validation.constraints.Digits
 import javax.validation.constraints.NotBlank
@@ -20,7 +21,8 @@ data class Ingredient(
 
 data class Taco(
         var id: Long? = null,
-        var createdAt: Date = Date(),
+        @DateTimeFormat(pattern = "dd-MM-yyyy")
+        var createdAt: Date? = null,
         @field:NotNull
         @field:Size(min = 5, message = "Name must be at least 5 characters long")
         var name: String? = null,
@@ -30,7 +32,8 @@ data class Taco(
 
 data class Order(
         var id: Long? = null,
-        var placedAt: Date = Date(),
+        @DateTimeFormat(pattern = "dd-MM-yyyy")
+        var placedAt: Date? = null,
         @field:NotBlank(message = "Name is required")
         var name: String = "",
         @field:NotBlank(message = "Street is required")

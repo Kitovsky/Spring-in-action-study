@@ -34,7 +34,7 @@ class JdbcTacoRepository(
         val pcs = PreparedStatementCreatorFactory(
                 "insert into Taco (name, createdAt) values (?, ?)",
                 Types.VARCHAR, Types.TIMESTAMP
-        ).newPreparedStatementCreator(arrayOf(taco.name, Timestamp(taco.createdAt.time)))
+        ).newPreparedStatementCreator(arrayOf(taco.name, Timestamp(taco.createdAt!!.time)))
         val keyHolder = GeneratedKeyHolder()
         jdbc.update(pcs, keyHolder)
         return keyHolder.key!!.toLong()

@@ -7,8 +7,10 @@ import kit.tacocloud.tacos.domain.Taco
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
+import org.springframework.stereotype.Repository
 import java.util.Date
 
+@Repository
 class JdbcOrderRepository(
         @Autowired private val jdbc: JdbcTemplate
 ) : OrderRepository {
@@ -39,7 +41,7 @@ class JdbcOrderRepository(
 
     private fun saveOrderDetails(order: Order): Long {
         val values = objectMapper.convertValue<MutableMap<String, Any>>(order)
-        values["placedAt"] = order.placedAt
+        values["placedAt"] = order.placedAt!!
         return orderInserter.executeAndReturnKey(values).toLong()
     }
 }

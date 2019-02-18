@@ -57,13 +57,13 @@ class DesignTacoController(
     }
 
     @PostMapping
-    fun processDesign(@Valid taco: Taco, errors: Errors,
+    fun processDesign(@Valid design: Taco, errors: Errors,
                       @ModelAttribute order: Order): String {
         if (errors.hasErrors()) {
             return "design"
         }
-        log.info("Processing taco: {}", taco)
-        val saved = tacoRepo.save(taco)
+        log.info("Processing design: {}", design)
+        val saved = tacoRepo.save(design)
         order.addTaco(saved)
         return "redirect:/orders/current"
     }
