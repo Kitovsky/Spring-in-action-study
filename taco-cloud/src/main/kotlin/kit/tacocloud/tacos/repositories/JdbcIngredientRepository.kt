@@ -14,7 +14,7 @@ class JdbcIngredientRepository(
     override fun findAll(): Iterable<Ingredient> =
             jdbc.query("select id, name, type from Ingredient", ::mapRowToIngredient)
 
-    override fun findOne(id: String): Ingredient? =
+    override fun findById(id: String): Ingredient? =
             jdbc.queryForObject("select id, name, type from Ingredient where id=?",
                     ::mapRowToIngredient, arrayOf(id))
 

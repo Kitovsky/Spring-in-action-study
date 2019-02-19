@@ -52,13 +52,13 @@ class DesignTacoController(
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.filter { it.type == type })
         }
-        model.addAttribute("design", Taco())
+//        model.addAttribute("design", Taco())
         return "design"
     }
 
     @PostMapping
     fun processDesign(@Valid design: Taco, errors: Errors,
-                      @ModelAttribute order: Order): String {
+                      @ModelAttribute order: Order, model: Model): String {
         if (errors.hasErrors()) {
             return "design"
         }
