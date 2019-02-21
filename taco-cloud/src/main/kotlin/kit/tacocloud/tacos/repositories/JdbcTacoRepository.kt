@@ -1,6 +1,5 @@
 package kit.tacocloud.tacos.repositories
 
-import kit.tacocloud.tacos.domain.Ingredient
 import kit.tacocloud.tacos.domain.Taco
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -24,9 +23,9 @@ class JdbcTacoRepository(
         return taco
     }
 
-    private fun saveIngredientToTaco(ingredient: Ingredient, tacoId: Long) {
+    private fun saveIngredientToTaco(ingredientId: String, tacoId: Long) {
         jdbc.update("insert into Taco_Ingredients (taco, ingredient) values (?, ?)",
-                tacoId, ingredient.id)
+                tacoId, ingredientId)
     }
 
     private fun saveTacoInfo(taco: Taco): Long {

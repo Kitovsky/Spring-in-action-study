@@ -7,10 +7,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-class TacoCloudApplicationTests {
+internal class TacoCloudApplicationTests {
 
     @Test
-    fun contextLoads() {
+    internal fun contextLoads() {
     }
 
 }

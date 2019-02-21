@@ -27,7 +27,7 @@ data class Taco(
         @field:Size(min = 5, message = "Name must be at least 5 characters long")
         var name: String? = null,
         @field:Size(min = 1, message = "You must choose at least 1 ingredient")
-        val ingredients: MutableList<Ingredient> = mutableListOf()
+        val ingredients: List<String> = listOf()
 )
 
 data class Order(
