@@ -1,14 +1,18 @@
 package kit.tacocloud
 
+import kit.tacocloud.tacos.repositories.IngredientRepository
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(HomeController::class)
@@ -16,6 +20,8 @@ class HomeControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
+    @MockBean
+    private lateinit var ingredientRepository: IngredientRepository
 
     @Test
     fun homePageTest() {
