@@ -120,7 +120,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
     private fun assertDesignPageElements() {
         assertEquals(designPageUrl(), browser.currentUrl)
-        val ingredientGroups = browser.findElementByClassName("ingredient-group")
+        val ingredientGroups = browser.findElementsByClassName("ingredient-group")
         assertEquals(5, ingredientGroups.size)
 
         val wrapGroup = browser.findElementByCssSelector("div.ingredient-group#wraps")
@@ -156,7 +156,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
     private fun clickBuildAnotherTaco() {
         assertTrue(browser.currentUrl.startsWith(orderDetailsPageUrl()))
-        browser.findElementByCssSelector("a[id='another'").click()
+        browser.findElementByCssSelector("a[id='another']").click()
     }
 
 
