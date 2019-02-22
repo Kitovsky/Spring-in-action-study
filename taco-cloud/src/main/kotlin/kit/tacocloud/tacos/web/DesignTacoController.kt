@@ -1,5 +1,6 @@
-package kit.tacocloud
+package kit.tacocloud.tacos.web
 
+import kit.tacocloud.logger
 import kit.tacocloud.tacos.domain.Ingredient
 import kit.tacocloud.tacos.domain.Order
 import kit.tacocloud.tacos.domain.Taco
@@ -42,8 +43,8 @@ class DesignTacoController(
     @ModelAttribute(name = "order")
     fun order() = Order()
 
-//    @ModelAttribute(name = "taco")
-//    fun taco() = Taco()
+    @ModelAttribute(name = "taco")
+    fun taco() = Taco()
 
     @GetMapping
     fun showDesignForm(model: Model): String {
@@ -52,7 +53,7 @@ class DesignTacoController(
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.filter { it.type == type })
         }
-        model.addAttribute("design", Taco())
+//        model.addAttribute("design", Taco())
         return "design"
     }
 
@@ -60,7 +61,7 @@ class DesignTacoController(
     fun processDesign(@Valid design: Taco, errors: Errors,
                       @ModelAttribute order: Order, model: Model): String {
         if (errors.hasErrors()) {
-            return "design"
+            return showDesignForm(model)
         }
         log.info("Processing design: {}", design)
         val saved = tacoRepo.save(design)

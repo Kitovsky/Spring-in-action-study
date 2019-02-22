@@ -1,5 +1,6 @@
-package kit.tacocloud
+package kit.tacocloud.tacos.web
 
+import kit.tacocloud.logger
 import kit.tacocloud.tacos.domain.Order
 import kit.tacocloud.tacos.repositories.OrderRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +26,7 @@ class OrderController(
 
     @GetMapping("/current")
     fun orderForm(model: Model): String {
-        model.addAttribute("order", Order())
+//        model.addAttribute("order", Order())
         return "orderForm"
     }
 

@@ -1,5 +1,6 @@
 package kit.tacocloud
 
+import kit.tacocloud.tacos.web.HomeController
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
