@@ -33,7 +33,7 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
             Ingredient("JACK", "Monterrey Jack", Ingredient.Type.CHEESE),
             Ingredient("SLSA", "Salsa", Ingredient.Type.SAUCE),
             Ingredient("SRCR", "Sour Cream", Ingredient.Type.SAUCE))
-    private var tacoDesign = Taco(name = "Test Taco", ingredients = listOf("FLTO", "GRBF", "CHED"))
+    private var tacoDesign = Taco(name = "Test Taco", ingredients = listOf(ingredients[0], ingredients[2], ingredients[6]))
 
     @Test
     internal fun showDesignFormTest() {

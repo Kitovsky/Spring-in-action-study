@@ -68,7 +68,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
         val validationErrors = getValidationErrorTexts()
         assertEquals(4, validationErrors.size)
-        assertTrue(validationErrors.contains("Please correct the problems below and resubmit."))
+        assertTrue(validationErrors.contains("Please correct the problems below and resubmit"))
         assertTrue(validationErrors.contains("Not a valid credit card number"))
         assertTrue(validationErrors.contains("Must be formatted MM/YY"))
         assertTrue(validationErrors.contains("Invalid CVV"))
@@ -82,7 +82,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
         val validationErrors = getValidationErrorTexts()
         assertEquals(9, validationErrors.size)
-        assertTrue(validationErrors.contains("Please correct the problems below and resubmit."))
+        assertTrue(validationErrors.contains("Please correct the problems below and resubmit"))
         assertTrue(validationErrors.contains("Name is required"))
         assertTrue(validationErrors.contains("Street is required"))
         assertTrue(validationErrors.contains("City is required"))

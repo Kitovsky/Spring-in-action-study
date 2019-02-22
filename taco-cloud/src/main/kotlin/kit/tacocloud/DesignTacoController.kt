@@ -42,8 +42,8 @@ class DesignTacoController(
     @ModelAttribute(name = "order")
     fun order() = Order()
 
-    @ModelAttribute(name = "taco")
-    fun taco() = Taco()
+//    @ModelAttribute(name = "taco")
+//    fun taco() = Taco()
 
     @GetMapping
     fun showDesignForm(model: Model): String {
@@ -52,7 +52,7 @@ class DesignTacoController(
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.filter { it.type == type })
         }
-//        model.addAttribute("design", Taco())
+        model.addAttribute("design", Taco())
         return "design"
     }
 
