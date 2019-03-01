@@ -26,7 +26,7 @@ alter table Taco_Ingredients
 create table if not exists Taco_Order
 (
   id identity,
-  name         varchar(50) not null,
+  targetName         varchar(50) not null,
   street       varchar(50) not null,
   city         varchar(50) not null,
   state        varchar(20)  not null,

@@ -40,23 +40,18 @@ data class Order(
         var placedAt: Date? = null,
 
         @field:Size(min = 5, max = 50, message = "Name must be from 5 to 50 characters")
-        @field:NotBlank(message = "Name is required")
-        var name: String = "",
+        var targetName: String = "",
 
         @field:Size(min = 5, max = 50, message = "Street must be from 5 to 50 characters")
-        @field:NotBlank(message = "Street is required")
         var street: String = "",
 
         @field:Size(min = 5, max = 50, message = "City must be from 5 to 50 characters")
-        @field:NotBlank(message = "City is required")
         var city: String = "",
 
         @field:Size(min = 5, max = 20, message = "State must be from 5 to 20 characters")
-        @field:NotBlank(message = "State is required")
         var state: String = "",
 
         @field:Size(min = 5, max = 10, message = "Zip code must be from 5 to 10 characters")
-        @field:NotBlank(message = "Zip code is required")
         var zip: String = "",
 
         @field:CreditCardNumber(message = "Not a valid credit card number")
