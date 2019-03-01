@@ -54,13 +54,13 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
     private fun submitInvalidOrderForm() {
         assertTrue(browser.currentUrl.startsWith(orderDetailsPageUrl()))
-        fillField("input#name", "I")
-        fillField("input#street", "1")
-        fillField("input#city", "F")
-        fillField("input#state", "C")
-        fillField("input#zip", "8")
+        fillField("input#name", "I23423423")
+        fillField("input#street", "123423432")
+        fillField("input#city", "Fdsfdsf")
+        fillField("input#state", "Csdfsdf")
+        fillField("input#zip", "8sdfds")
         fillField("input#ccNumber", "1234432112344322")
-        fillField("input#ccExpiration", "14/91")
+        fillField("input#ccExpiration", "14/21")
         fillField("input#ccCVV", "1234")
         browser.findElementByCssSelector("form").submit()
 

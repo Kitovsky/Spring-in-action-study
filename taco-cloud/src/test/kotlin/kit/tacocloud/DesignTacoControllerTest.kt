@@ -4,6 +4,7 @@ import kit.tacocloud.tacos.domain.Ingredient
 import kit.tacocloud.tacos.domain.Taco
 import kit.tacocloud.tacos.web.DesignTacoController
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -16,13 +17,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
+import org.mockito.Mockito.`when` as whenever
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(DesignTacoController::class)
 internal class DesignTacoControllerTest : AbstractControllerTest() {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
+
     private val ingredients = listOf(
             Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP),
             Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
@@ -38,6 +42,7 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
 
     @Test
     internal fun showDesignFormTest() {
+        whenever(ingredientRepository.findAll()).thenReturn(ingredients)
         mockMvc.perform(get("/design"))
                 .andExpect(status().isOk)
                 .andExpect(view().name("design"))
@@ -50,6 +55,10 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
 
     @Test
     internal fun processDesignTest() {
+        whenever(tacoRepository.save(tacoDesign)).thenReturn(tacoDesign)
+        whenever(ingredientRepository.findById("FLTO")).thenReturn(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP))
+        whenever(ingredientRepository.findById("GRBF")).thenReturn(Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN))
+        whenever(ingredientRepository.findById("CHED")).thenReturn(Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE))
         mockMvc.perform(post("/design")
                 .content("name=Test+Taco&ingredients=FLTO,GRBF,CHED")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
