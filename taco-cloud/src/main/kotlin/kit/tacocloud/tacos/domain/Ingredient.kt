@@ -3,13 +3,21 @@ package kit.tacocloud.tacos.domain
 import org.hibernate.validator.constraints.CreditCardNumber
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.ManyToMany
+import javax.persistence.PrePersist
+import javax.persistence.Table
 import javax.validation.constraints.Digits
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
+@Entity
 data class Ingredient(
+        @Id
         val id: String,
         val name: String,
         val type: Type
@@ -19,25 +27,38 @@ data class Ingredient(
     }
 }
 
+@Entity
 data class Taco(
-        var id: Long? = null,
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var id: Long = 0,
 
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        var createdAt: Date? = null,
+        var createdAt: Date = Date(),
 
         @field:NotNull
         @field:Size(min = 5, message = "Name must be at least 5 characters long")
-        var name: String? = null,
+        var name: String = "",
 
+        @ManyToMany(targetEntity = Ingredient::class)
         @field:Size(min = 1, message = "You must choose at least 1 ingredient")
         var ingredients: List<Ingredient> = listOf()
-)
+) {
+    @PrePersist
+    fun createAt() {
+        this.createdAt = Date()
+    }
+}
 
+@Entity
+@Table(name = "Taco_Order")
 data class Order(
-        var id: Long? = null,
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var id: Long = 0,
 
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        var placedAt: Date? = null,
+        var placedAt: Date = Date(),
 
         @field:Size(min = 5, max = 50, message = "Name must be from 5 to 50 characters")
         var targetName: String = "",
@@ -64,11 +85,17 @@ data class Order(
         @field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
         var ccCVV: String = "",
 
+        @ManyToMany(targetEntity = Taco::class)
         @field:Size(min = 1, message = "You must choose at least 1 taco")
         var tacos: MutableList<Taco> = mutableListOf()
 ) {
     fun addTaco(taco: Taco) {
         tacos.add(taco)
+    }
+
+    @PrePersist
+    fun placedAt() {
+        this.placedAt = Date()
     }
 }
 
