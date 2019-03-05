@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
+import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -56,9 +57,9 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
     @Test
     internal fun processDesignTest() {
         whenever(tacoRepository.save(tacoDesign)).thenReturn(tacoDesign)
-        whenever(ingredientRepository.findById("FLTO")).thenReturn(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP))
-        whenever(ingredientRepository.findById("GRBF")).thenReturn(Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN))
-        whenever(ingredientRepository.findById("CHED")).thenReturn(Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE))
+        whenever(ingredientRepository.findById("FLTO")).thenReturn(Optional.of(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP)))
+        whenever(ingredientRepository.findById("GRBF")).thenReturn(Optional.of(Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN)))
+        whenever(ingredientRepository.findById("CHED")).thenReturn(Optional.of(Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE)))
         mockMvc.perform(post("/design")
                 .content("name=Test+Taco&ingredients=FLTO,GRBF,CHED")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))

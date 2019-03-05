@@ -8,11 +8,12 @@ import java.util.concurrent.TimeUnit
 
 abstract class AbstractBrowserTest {
     companion object {
-        val browser = HtmlUnitDriver()
+        var browser = HtmlUnitDriver()
 
         @BeforeAll
         @JvmStatic
         fun setup() {
+            browser = HtmlUnitDriver()
             browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)
         }
 

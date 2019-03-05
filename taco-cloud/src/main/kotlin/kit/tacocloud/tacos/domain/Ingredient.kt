@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.CreditCardNumber
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -20,6 +22,7 @@ data class Ingredient(
         @Id
         val id: String,
         val name: String,
+        @Enumerated(EnumType.STRING)
         val type: Type
 ) {
     enum class Type {
@@ -30,11 +33,11 @@ data class Ingredient(
 @Entity
 data class Taco(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0,
 
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        var createdAt: Date = Date(),
+        var createdAt: Date? = null,
 
         @field:NotNull
         @field:Size(min = 5, message = "Name must be at least 5 characters long")
@@ -54,11 +57,11 @@ data class Taco(
 @Table(name = "Taco_Order")
 data class Order(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0,
 
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        var placedAt: Date = Date(),
+        var placedAt: Date? = null,
 
         @field:Size(min = 5, max = 50, message = "Name must be from 5 to 50 characters")
         var targetName: String = "",

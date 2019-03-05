@@ -28,6 +28,10 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8'
     implementation 'joda-time:joda-time:2.3'

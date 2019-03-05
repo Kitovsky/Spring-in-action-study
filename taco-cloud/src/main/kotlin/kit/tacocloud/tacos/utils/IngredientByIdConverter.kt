@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component
 class IngredientByIdConverter(
         @Autowired private val ingredientRepository: IngredientRepository
 ) : Converter<String, Ingredient> {
-    override fun convert(id: String) = ingredientRepository.findById(id)
+    override fun convert(id: String) = ingredientRepository.findById(id).get()
 }
