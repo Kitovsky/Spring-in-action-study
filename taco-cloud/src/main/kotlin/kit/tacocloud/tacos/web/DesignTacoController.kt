@@ -26,18 +26,6 @@ class DesignTacoController(
 ) {
     companion object {
         val log by logger()
-        /*val ingredients = listOf(
-                Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP),
-                Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
-                Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN),
-                Ingredient("CARN", "Carnitas", Ingredient.Type.PROTEIN),
-                Ingredient("TMTO", "Diced Tomatoes", Ingredient.Type.VEGGIES),
-                Ingredient("LETC", "Lettuce", Ingredient.Type.VEGGIES),
-                Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE),
-                Ingredient("JACK", "Monterrey Jack", Ingredient.Type.CHEESE),
-                Ingredient("SLSA", "Salsa", Ingredient.Type.SAUCE),
-                Ingredient("SRCR", "Sour Cream", Ingredient.Type.SAUCE)
-        )*/
     }
 
     @ModelAttribute(name = "order")
@@ -53,7 +41,6 @@ class DesignTacoController(
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.filter { it.type == type })
         }
-//        model.addAttribute("design", Taco())
         return "design"
     }
 

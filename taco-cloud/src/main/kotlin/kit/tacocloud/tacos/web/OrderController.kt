@@ -26,7 +26,6 @@ class OrderController(
 
     @GetMapping("/current")
     fun orderForm(model: Model): String {
-//        model.addAttribute("order", Order())
         return "orderForm"
     }
 
