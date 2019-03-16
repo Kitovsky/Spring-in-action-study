@@ -10,10 +10,6 @@ import javax.persistence.Id
 
 @Entity
 class User(
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long = 0,
-
         private val username: String = "",
         private val password: String = "",
         val fullname: String = "",
@@ -21,7 +17,11 @@ class User(
         val city: String = "",
         val state: String = "",
         val zip: String = "",
-        val phoneNumber: String = ""
+        val phoneNumber: String = "",
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var id: Long = 0
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
             mutableListOf(SimpleGrantedAuthority("USER_ROLE"))

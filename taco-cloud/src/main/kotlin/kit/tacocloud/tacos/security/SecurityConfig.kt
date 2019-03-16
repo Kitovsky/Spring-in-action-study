@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +22,17 @@ class SecurityConfig(
                 .passwordEncoder(encoder())
     }
 
+    override fun configure(http: HttpSecurity) {
+        http.authorizeRequests()
+                .antMatchers("/design", "/orders")
+                .hasRole("ROLE_USER")
+                .antMatchers("/", "/**").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/design")
+    }
+
     @Bean
-    fun encoder() = BCryptPasswordEncoder(5)
+    fun encoder(): PasswordEncoder = BCryptPasswordEncoder(5)
 }
