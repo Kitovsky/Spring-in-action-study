@@ -2,8 +2,10 @@ package kit.tacocloud.tacos.web
 
 import kit.tacocloud.logger
 import kit.tacocloud.tacos.domain.Order
+import kit.tacocloud.tacos.domain.User
 import kit.tacocloud.tacos.repositories.OrderRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
@@ -31,7 +33,8 @@ class OrderController(
 
     @PostMapping
     fun processOrder(@Valid order: Order, errors: Errors,
-                     sessionStatus: SessionStatus): String {
+                     sessionStatus: SessionStatus,
+                     @AuthenticationPrincipal user: User): String {
         if (errors.hasErrors()) {
             return "orderForm"
         }

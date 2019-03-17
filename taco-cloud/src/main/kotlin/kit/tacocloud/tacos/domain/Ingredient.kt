@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
 import javax.persistence.PrePersist
 import javax.persistence.Table
 import javax.validation.constraints.Digits
@@ -90,7 +91,10 @@ data class Order(
 
         @ManyToMany(targetEntity = Taco::class)
         @field:Size(min = 1, message = "You must choose at least 1 taco")
-        var tacos: MutableList<Taco> = mutableListOf()
+        var tacos: MutableList<Taco> = mutableListOf(),
+
+        @ManyToOne
+        var user: User
 ) {
     fun addTaco(taco: Taco) {
         tacos.add(taco)
