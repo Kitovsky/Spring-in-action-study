@@ -4,9 +4,11 @@ import kit.tacocloud.logger
 import kit.tacocloud.tacos.domain.Ingredient
 import kit.tacocloud.tacos.domain.Order
 import kit.tacocloud.tacos.domain.Taco
+import kit.tacocloud.tacos.domain.User
 import kit.tacocloud.tacos.repositories.IngredientRepository
 import kit.tacocloud.tacos.repositories.TacoRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
@@ -35,20 +37,23 @@ class DesignTacoController(
     fun taco() = Taco()
 
     @GetMapping
-    fun showDesignForm(model: Model): String {
+    fun showDesignForm(model: Model, @AuthenticationPrincipal user: User): String {
+        log.info("---Designing taco")
         val ingredients = ingredientRepo.findAll()
         Ingredient.Type.values().forEach { type ->
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.filter { it.type == type })
         }
+        model.addAttribute("user", user)
         return "design"
     }
 
     @PostMapping
     fun processDesign(@Valid design: Taco, errors: Errors,
-                      @ModelAttribute order: Order, model: Model): String {
+                      @ModelAttribute order: Order, model: Model,
+                      @AuthenticationPrincipal user: User): String {
         if (errors.hasErrors()) {
-            return showDesignForm(model)
+            return showDesignForm(model, user)
         }
         log.info("Processing design: {}", design)
         val saved = tacoRepo.save(design)
