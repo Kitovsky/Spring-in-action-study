@@ -94,7 +94,7 @@ data class Order(
         var tacos: MutableList<Taco> = mutableListOf(),
 
         @ManyToOne
-        var user: User
+        var user: User = User()
 ) {
     fun addTaco(taco: Taco) {
         tacos.add(taco)

@@ -24,7 +24,7 @@ class User(
         var id: Long = 0
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
-            mutableListOf(SimpleGrantedAuthority("USER_ROLE"))
+            mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
 
     override fun isEnabled(): Boolean = true
 

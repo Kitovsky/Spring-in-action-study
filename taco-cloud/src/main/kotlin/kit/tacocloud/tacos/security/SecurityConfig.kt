@@ -25,7 +25,7 @@ class SecurityConfig(
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
                 .antMatchers("/design", "/orders")
-                .hasRole("USER_ROLE")
+                .hasRole("USER")
                 .antMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
@@ -34,6 +34,13 @@ class SecurityConfig(
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
+                .and()
+                .csrf()
+                .ignoringAntMatchers("/h2-console/**")
+                .and()
+                .headers()
+                .frameOptions()
+                .sameOrigin()
     }
 
     @Bean
