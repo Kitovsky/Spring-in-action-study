@@ -8,14 +8,14 @@
     <link rel="stylesheet" th:href="@{/styles.css}"/>
 </head>
 <body>
-<h1>Register</h1>
+<h1>Login</h1>
 <img th:src="@{/images/TacoCloud.jpg}"/>
 <div th:if="${error}">
     Unable to login. Check your username and password.
 </div>
 
 <p>New here? Click
-    <a th:ref="@{register}">here</a> to register.</p>
+    <a th:href="@{/register}">here</a> to register.</p>
 <form method="POST" th:action="@{/login}" id="loginForm">
     <label for="username">Username: </label>
     <input type="text" name="username" id="username"/><br/>

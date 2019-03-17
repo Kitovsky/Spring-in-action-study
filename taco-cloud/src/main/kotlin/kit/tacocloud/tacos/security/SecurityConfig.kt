@@ -25,12 +25,15 @@ class SecurityConfig(
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
                 .antMatchers("/design", "/orders")
-                .hasRole("ROLE_USER")
+                .hasRole("USER_ROLE")
                 .antMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/design")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
     }
 
     @Bean
