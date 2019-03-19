@@ -1,6 +1,5 @@
 package kit.tacocloud
 
-import kit.tacocloud.tacos.web.WebConfig
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
 @ExtendWith(SpringExtension::class)
-@WebMvcTest(WebConfig::class)
+@WebMvcTest(secure = false)
 internal class HomeControllerTest : AbstractControllerTest() {
 
     @Autowired
