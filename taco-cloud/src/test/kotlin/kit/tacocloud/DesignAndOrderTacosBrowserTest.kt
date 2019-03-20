@@ -22,34 +22,49 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
     internal fun designTacoPageHappyPathTest() {
         browser.get(homePageUrl())
         clickDesignTaco()
+        assertLandedOnLoginPage()
+        doRegistration("test_user", "test_password")
+        assertLandedOnLoginPage()
+        doLogin("test_user", "test_password")
         assertDesignPageElements()
         buildAndSubmitATaco("Basic Taco", "FLTO", "GRBF", "CHED", "TMTO", "SLSA")
         clickBuildAnotherTaco()
         buildAndSubmitATaco("Another Taco", "COTO", "CARN", "JACK", "LETC", "SRCR")
         fillInAndSubmitOrderForm()
         assertEquals(homePageUrl(), browser.currentUrl)
+        doLogout()
     }
 
     @Test
     internal fun designTacoPageEmptyOrderInfoTest() {
         browser.get(homePageUrl())
         clickDesignTaco()
+        assertLandedOnLoginPage()
+        doRegistration("test_user2", "test_password")
+        assertLandedOnLoginPage()
+        doLogin("test_user2", "test_password")
         assertDesignPageElements()
         buildAndSubmitATaco("Basic Taco", "FLTO", "GRBF", "CHED", "TMTO", "SLSA")
         submitEmptyOrderForm()
         fillInAndSubmitOrderForm()
         assertEquals(homePageUrl(), browser.currentUrl)
+        doLogout()
     }
 
     @Test
     internal fun designTacoPageInvalidOrderInfoTest() {
         browser.get(homePageUrl())
         clickDesignTaco()
+        assertLandedOnLoginPage()
+        doRegistration("test_user3", "test_password")
+        assertLandedOnLoginPage()
+        doLogin("test_user3", "test_password")
         assertDesignPageElements()
         buildAndSubmitATaco("Basic Taco", "FLTO", "GRBF", "CHED", "TMTO", "SLSA")
         submitInvalidOrderForm()
         fillInAndSubmitOrderForm()
         assertEquals(homePageUrl(), browser.currentUrl)
+        doLogout()
     }
 
     private fun submitInvalidOrderForm() {
@@ -97,7 +112,6 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
             .stream()
             .map { it.text }
             .collect(Collectors.toList())
-
 
     private fun fillInAndSubmitOrderForm() {
         assertTrue(browser.currentUrl.startsWith(orderDetailsPageUrl()))
@@ -159,7 +173,6 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
         browser.findElementByCssSelector("a[id='another']").click()
     }
 
-
     private fun buildAndSubmitATaco(name: String, vararg ingredients: String) {
         assertDesignPageElements()
         ingredients.forEach {
@@ -186,7 +199,40 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
     private fun homePageUrl() = "http://localhost:$port/"
 
+    private fun loginPageUrl() = homePageUrl() + "login"
+
+    private fun registrationPageUrl() = homePageUrl() + "register"
+
     private fun orderDetailsPageUrl() = homePageUrl() + "orders"
 
     private fun currentOrderDetailsPageUrl() = homePageUrl() + "orders/current"
+
+    private fun doLogin(username: String, password: String) {
+        browser.findElementByCssSelector("input#username").sendKeys(username)
+        browser.findElementByCssSelector("input#password").sendKeys(password)
+        browser.findElementByCssSelector("form#loginForm").submit()
+    }
+
+    private fun doRegistration(username: String, password: String) {
+        browser.findElementByLinkText("here").click()
+        assertEquals(registrationPageUrl(), browser.currentUrl)
+        browser.findElementByName("username").sendKeys(username)
+        browser.findElementByName("password").sendKeys(password)
+        browser.findElementByName("confirm").sendKeys(password)
+        browser.findElementByName("fullname").sendKeys("Test McTest")
+        browser.findElementByName("street").sendKeys("1234 Test Street")
+        browser.findElementByName("city").sendKeys("Test City")
+        browser.findElementByName("state").sendKeys("TX")
+        browser.findElementByName("zip").sendKeys("12345")
+        browser.findElementByName("phone").sendKeys("123-123-1234")
+        browser.findElementByCssSelector("form#registerForm").submit()
+    }
+
+    private fun doLogout() {
+        browser.findElementByCssSelector("form#logoutForm")?.submit()
+    }
+
+    private fun assertLandedOnLoginPage() {
+        assertEquals(loginPageUrl(), browser.currentUrl)
+    }
 }
