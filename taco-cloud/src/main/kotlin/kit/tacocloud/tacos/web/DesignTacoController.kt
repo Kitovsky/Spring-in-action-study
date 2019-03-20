@@ -51,7 +51,7 @@ class DesignTacoController(
     @PostMapping
     fun processDesign(@Valid design: Taco, errors: Errors,
                       @ModelAttribute order: Order, model: Model,
-                      @AuthenticationPrincipal user: User): String {
+                      @AuthenticationPrincipal user: User?): String {
         if (errors.hasErrors()) {
             return showDesignForm(model, user)
         }

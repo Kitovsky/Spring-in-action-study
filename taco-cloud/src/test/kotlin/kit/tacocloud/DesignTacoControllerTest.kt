@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -63,7 +64,7 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
         whenever(ingredientRepository.findById("FLTO")).thenReturn(Optional.of(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP)))
         whenever(ingredientRepository.findById("GRBF")).thenReturn(Optional.of(Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN)))
         whenever(ingredientRepository.findById("CHED")).thenReturn(Optional.of(Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE)))
-        mockMvc.perform(post("/design")
+        mockMvc.perform(post("/design").with(csrf())
                 .content("name=Test+Taco&ingredients=FLTO,GRBF,CHED")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection)
