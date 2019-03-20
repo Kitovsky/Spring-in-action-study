@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
-@Service("CustomUserDetails")
+@Service
 class UserRepositoryUserDetailsService(
         @Autowired val userRepo: UserRepository
 ) : UserDetailsService {

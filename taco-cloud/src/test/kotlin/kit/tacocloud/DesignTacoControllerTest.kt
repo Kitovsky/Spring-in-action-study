@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -42,6 +43,7 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
     private var tacoDesign = Taco(name = "Test Taco", ingredients = listOf(ingredients[0], ingredients[2], ingredients[6]))
 
     @Test
+    @WithMockUser(username="test_user", password="test_pass")
     internal fun showDesignFormTest() {
         whenever(ingredientRepository.findAll()).thenReturn(ingredients)
         mockMvc.perform(get("/design"))
@@ -55,6 +57,7 @@ internal class DesignTacoControllerTest : AbstractControllerTest() {
     }
 
     @Test
+    @WithMockUser(username="test_user", password="test_pass", authorities=["ROLE_USER"])
     internal fun processDesignTest() {
         whenever(tacoRepository.save(tacoDesign)).thenReturn(tacoDesign)
         whenever(ingredientRepository.findById("FLTO")).thenReturn(Optional.of(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP)))

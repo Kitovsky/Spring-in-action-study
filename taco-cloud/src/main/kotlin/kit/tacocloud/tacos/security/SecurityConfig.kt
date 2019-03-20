@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-        @Qualifier("CustomUserDetails") @Autowired val userDetailsService: UserDetailsService
+        @Autowired val userDetailsService: UserDetailsService
 ) : WebSecurityConfigurerAdapter() {
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService)

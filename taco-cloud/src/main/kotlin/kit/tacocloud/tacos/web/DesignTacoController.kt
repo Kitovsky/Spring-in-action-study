@@ -37,7 +37,7 @@ class DesignTacoController(
     fun taco() = Taco()
 
     @GetMapping
-    fun showDesignForm(model: Model, @AuthenticationPrincipal user: User): String {
+    fun showDesignForm(model: Model, @AuthenticationPrincipal user: User?): String {
         log.info("---Designing taco")
         val ingredients = ingredientRepo.findAll()
         Ingredient.Type.values().forEach { type ->
