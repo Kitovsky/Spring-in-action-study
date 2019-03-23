@@ -77,7 +77,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
         fillField("input#ccNumber", "1234432112344322")
         fillField("input#ccExpiration", "14/21")
         fillField("input#ccCVV", "1234")
-        browser.findElementByCssSelector("form").submit()
+        browser.findElementByCssSelector("form#orderForm").submit()
 
         assertEquals(orderDetailsPageUrl(), browser.currentUrl)
 
@@ -123,7 +123,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
         fillField("input#ccNumber", "5209204583866906")
         fillField("input#ccExpiration", "10/19")
         fillField("input#ccCVV", "123")
-        browser.findElementByCssSelector("form").submit()
+        browser.findElementByCssSelector("form#orderForm").submit()
     }
 
     private fun fillField(fieldName: String, value: String) {
@@ -179,7 +179,7 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
             browser.findElementByCssSelector("input[value='$it']").click()
         }
         browser.findElementByCssSelector("input#name").sendKeys(name)
-        browser.findElementByCssSelector("form").submit()
+        browser.findElementByCssSelector("form#designForm").submit()
 
     }
 

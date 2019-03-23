@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/styles.css}"/>
 </head>
 <body>
-<form method="POST" th:action="@{/logout}">
+<form method="POST" th:action="@{/logout}" id="logoutForm">
     <input type="submit" value="Logout"/>
 </form>
 <form method="POST" th:action="@{/orders}" th:object="${order}" id="orderForm">
