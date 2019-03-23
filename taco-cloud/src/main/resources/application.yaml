@@ -1,6 +1,13 @@
 server:
   port: 8085
 
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: DEBUG
+
 spring:
   jpa:
     hibernate:
