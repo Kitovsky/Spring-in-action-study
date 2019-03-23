@@ -5,7 +5,6 @@ import kit.tacocloud.tacos.domain.Order
 import kit.tacocloud.tacos.domain.User
 import kit.tacocloud.tacos.repositories.OrderRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
@@ -22,15 +21,13 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("order")
-@ConfigurationProperties(prefix = "taco.orders")
 class OrderController(
-        @Autowired private val orderRepo: OrderRepository
+        @Autowired private val orderRepo: OrderRepository,
+        @Autowired private val orderProps: OrderProps
 ) {
     companion object {
         val log by logger()
     }
-
-    var pageSize: Int = 20
 
     @GetMapping("/current")
     fun orderForm(@AuthenticationPrincipal user: User,
@@ -58,8 +55,8 @@ class OrderController(
 
     @GetMapping
     fun ordersForUser(@AuthenticationPrincipal user: User, model: Model): String {
-        log.info("Page size '$pageSize' will be used")
-        val pageable = PageRequest.of(0, pageSize)
+        log.info("Page size '${orderProps.pageSize}' will be used")
+        val pageable = PageRequest.of(0, orderProps.pageSize)
         model.addAttribute("orders", orderRepo.findByUserOrderByPlacedAtDesc(user, pageable))
         return "orderList"
     }
