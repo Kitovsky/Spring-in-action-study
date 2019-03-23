@@ -91,7 +91,8 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
 
     private fun submitEmptyOrderForm() {
         assertEquals(currentOrderDetailsPageUrl(), browser.currentUrl)
-        browser.findElementByCssSelector("form").submit()
+        clearAutoPopulatedFields()
+        browser.findElementByCssSelector("form#orderForm").submit()
 
         assertEquals(orderDetailsPageUrl(), browser.currentUrl)
 
@@ -106,6 +107,15 @@ internal class DesignAndOrderTacosBrowserTest : AbstractBrowserTest() {
         assertTrue(validationErrors.contains("Not a valid credit card number"))
         assertTrue(validationErrors.contains("Must be formatted MM/YY"))
         assertTrue(validationErrors.contains("Invalid CVV"))
+    }
+
+    private fun clearAutoPopulatedFields() {
+        // clear fields automatically populated from user profile
+        fillField("input#targetName", "")
+        fillField("input#street", "")
+        fillField("input#city", "")
+        fillField("input#state", "")
+        fillField("input#zip", "")
     }
 
     private fun getValidationErrorTexts() = browser.findElementsByClassName("validationError")
