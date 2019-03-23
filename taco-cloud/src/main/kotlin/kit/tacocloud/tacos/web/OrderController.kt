@@ -7,6 +7,7 @@ import kit.tacocloud.tacos.repositories.OrderRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
@@ -48,5 +49,11 @@ class OrderController(
         orderRepo.save(order)
         sessionStatus.setComplete()
         return "redirect:/"
+    }
+
+    @GetMapping
+    fun ordersForUser(@AuthenticationPrincipal user: User, model: Model): String {
+        model.addAttribute("orders", orderRepo.findByUserOrderByPlacedAtDesc(user))
+        return "orderList"
     }
 }
