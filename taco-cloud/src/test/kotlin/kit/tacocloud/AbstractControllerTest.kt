@@ -4,7 +4,7 @@ import kit.tacocloud.tacos.repositories.IngredientRepository
 import kit.tacocloud.tacos.repositories.OrderRepository
 import kit.tacocloud.tacos.repositories.TacoRepository
 import kit.tacocloud.tacos.repositories.UserRepository
-import kit.tacocloud.tacos.web.OrderProps
+import kit.tacocloud.tacos.OrderProps
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.crypto.password.PasswordEncoder
 

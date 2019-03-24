@@ -3,6 +3,7 @@ package kit.tacocloud.tacos.web
 import kit.tacocloud.logger
 import kit.tacocloud.tacos.domain.Order
 import kit.tacocloud.tacos.domain.User
+import kit.tacocloud.tacos.OrderProps
 import kit.tacocloud.tacos.repositories.OrderRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest

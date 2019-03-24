@@ -1,4 +1,4 @@
-package kit.tacocloud.tacos.web
+package kit.tacocloud.tacos
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
@@ -16,4 +16,14 @@ class OrderProps {
     @Min(value = 5, message = "must be between 5 and 25")
     @Max(value = 25, message = "must be between 5 and 25")
     var pageSize: Int = 20
+}
+
+@Component
+@ConfigurationProperties("taco.discount")
+class DiscountCodeProps {
+
+    /**
+     * Discount codes for orders. Format: promo code - discount value.
+     */
+    var codes = HashMap<String, Int>()
 }

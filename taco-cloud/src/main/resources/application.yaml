@@ -20,3 +20,14 @@ spring:
 taco:
   orders:
     pageSize: 10
+  discount:
+    codes:
+      test: 10
+
+---
+spring:
+  profiles: prod
+
+  logging:
+    level:
+      tacos: WARN
