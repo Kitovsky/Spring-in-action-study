@@ -49,6 +49,7 @@ class OrderController(
             return "orderForm"
         }
         log.info("Order submitted: {}", order)
+        order.user = user
         orderRepo.save(order)
         sessionStatus.setComplete()
         return "redirect:/"
