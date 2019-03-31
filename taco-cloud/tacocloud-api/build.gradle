@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':tacocloud-data')
+    implementation project(':tacocloud-domain')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
