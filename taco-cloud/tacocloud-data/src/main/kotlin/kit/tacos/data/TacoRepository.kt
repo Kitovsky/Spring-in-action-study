@@ -1,6 +1,6 @@
 package kit.tacos.data
 
 import kit.tacos.domain.Taco
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.PagingAndSortingRepository
 
-interface TacoRepository : CrudRepository<Taco, Long>
+interface TacoRepository : PagingAndSortingRepository<Taco, Long>
