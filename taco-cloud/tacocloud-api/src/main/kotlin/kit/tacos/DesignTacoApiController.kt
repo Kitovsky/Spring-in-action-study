@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.hateoas.ResourceSupport
 import org.springframework.hateoas.Resources
+import org.springframework.hateoas.core.Relation
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport
@@ -65,6 +66,7 @@ class TacoResourceAssembler
     override fun toResource(entity: Taco) = createResourceWithId(entity.id, entity)
 }
 
+@Relation(value = "taco", collectionRelation = "tacos")
 data class TacoResource(
         val name: String,
         val createdAt: Date?,
