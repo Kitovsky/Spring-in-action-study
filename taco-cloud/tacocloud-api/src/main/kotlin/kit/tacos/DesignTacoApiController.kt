@@ -5,8 +5,11 @@ import kit.tacos.domain.Taco
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.hateoas.Resource
+import org.springframework.hateoas.Resources
+import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
+import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -21,14 +24,16 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(path = ["/design"], produces = [APPLICATION_JSON_VALUE])
 @CrossOrigin(origins = ["*"])
-class DesignTacoController(
+class DesignTacoApiController(
         @Autowired private val tacoRepo: TacoRepository
 ) {
 
     @GetMapping("/recent")
-    fun recentTacos(): Iterable<Taco> {
+    fun recentTacos(): Resources<Resource<Taco>> {
         val pageRequest = PageRequest.of(0, 12, Sort.by("createdAt").descending())
-        return tacoRepo.findAll(pageRequest).content
+        val resources = Resources.wrap(tacoRepo.findAll(pageRequest).content)
+        resources.add(linkTo(methodOn(this::class.java).recentTacos()).withRel("recents"))
+        return resources
     }
 
     @GetMapping("/{id}")
