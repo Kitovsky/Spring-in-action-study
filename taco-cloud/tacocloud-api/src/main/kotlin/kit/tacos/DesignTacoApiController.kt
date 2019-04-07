@@ -31,13 +31,17 @@ import java.util.Date
 class DesignTacoApiController(
         @Autowired private val tacoRepo: TacoRepository
 ) {
+    companion object {
+       private val tacoResourceAssembler = TacoResourceAssembler()
+    }
 
     @GetMapping("/recent")
-    fun recentTacos(): Resources<Resource<Taco>> {
+    fun recentTacos(): Resources<TacoResource> {
         val pageRequest = PageRequest.of(0, 12, Sort.by("createdAt").descending())
-        val resources = Resources.wrap(tacoRepo.findAll(pageRequest).content)
-        resources.add(linkTo(methodOn(this::class.java).recentTacos()).withRel("recents"))
-        return resources
+        val resources = tacoResourceAssembler.toResources(tacoRepo.findAll(pageRequest).content)
+        val recentResources = Resources<TacoResource>(resources)
+        recentResources.add(linkTo(methodOn(this::class.java).recentTacos()).withRel("recents"))
+        return recentResources
     }
 
     @GetMapping("/{id}")
