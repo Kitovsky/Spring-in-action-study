@@ -1,12 +1,10 @@
 package kit.tacos
 
 import kit.tacos.data.TacoRepository
-import kit.tacos.domain.Ingredient
 import kit.tacos.domain.Taco
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import org.springframework.hateoas.Resource
 import org.springframework.hateoas.ResourceSupport
 import org.springframework.hateoas.Resources
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
@@ -32,7 +30,7 @@ class DesignTacoApiController(
         @Autowired private val tacoRepo: TacoRepository
 ) {
     companion object {
-       private val tacoResourceAssembler = TacoResourceAssembler()
+        private val tacoResourceAssembler = TacoResourceAssembler()
     }
 
     @GetMapping("/recent")
@@ -60,7 +58,7 @@ class DesignTacoApiController(
         return tacoRepo.save(taco)
     }
 
-    private class TacoResourceAssembler()
+    private class TacoResourceAssembler
         : ResourceAssemblerSupport<Taco, TacoResource>(DesignTacoApiController::class.java,
             TacoResource::class.java) {
 
@@ -72,12 +70,12 @@ class DesignTacoApiController(
     data class TacoResource(
             val name: String,
             val createdAt: Date?,
-            val ingredients: List<Ingredient>
+            val ingredients: List<IngredientResource>
     ) : ResourceSupport() {
         companion object {
             fun from(taco: Taco) = TacoResource(taco.name,
                     taco.createdAt,
-                    taco.ingredients)
+                    IngredientResource.ingredientAssembler.toResources(taco.ingredients))
         }
     }
 }
