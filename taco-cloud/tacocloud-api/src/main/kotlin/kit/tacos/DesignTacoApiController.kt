@@ -29,14 +29,11 @@ import java.util.Date
 class DesignTacoApiController(
         @Autowired private val tacoRepo: TacoRepository
 ) {
-    companion object {
-        private val tacoResourceAssembler = TacoResourceAssembler()
-    }
 
     @GetMapping("/recent")
     fun recentTacos(): Resources<TacoResource> {
         val pageRequest = PageRequest.of(0, 12, Sort.by("createdAt").descending())
-        val resources = tacoResourceAssembler.toResources(tacoRepo.findAll(pageRequest).content)
+        val resources = TacoResource.tacoResourceAssembler.toResources(tacoRepo.findAll(pageRequest).content)
         val recentResources = Resources<TacoResource>(resources)
         recentResources.add(linkTo(methodOn(this::class.java).recentTacos()).withRel("recents"))
         return recentResources
@@ -57,25 +54,26 @@ class DesignTacoApiController(
     fun postTaco(@RequestBody taco: Taco): Taco {
         return tacoRepo.save(taco)
     }
+}
 
-    private class TacoResourceAssembler
-        : ResourceAssemblerSupport<Taco, TacoResource>(DesignTacoApiController::class.java,
-            TacoResource::class.java) {
+class TacoResourceAssembler
+    : ResourceAssemblerSupport<Taco, TacoResource>(DesignTacoApiController::class.java,
+        TacoResource::class.java) {
 
-        override fun instantiateResource(entity: Taco) = TacoResource.from(entity)
+    override fun instantiateResource(entity: Taco) = TacoResource.from(entity)
 
-        override fun toResource(entity: Taco) = createResourceWithId(entity.id, entity)
-    }
+    override fun toResource(entity: Taco) = createResourceWithId(entity.id, entity)
+}
 
-    data class TacoResource(
-            val name: String,
-            val createdAt: Date?,
-            val ingredients: List<IngredientResource>
-    ) : ResourceSupport() {
-        companion object {
-            fun from(taco: Taco) = TacoResource(taco.name,
-                    taco.createdAt,
-                    IngredientResource.ingredientAssembler.toResources(taco.ingredients))
-        }
+data class TacoResource(
+        val name: String,
+        val createdAt: Date?,
+        val ingredients: List<IngredientResource>
+) : ResourceSupport() {
+    companion object {
+        val tacoResourceAssembler = TacoResourceAssembler()
+        fun from(taco: Taco) = TacoResource(taco.name,
+                taco.createdAt,
+                IngredientResource.ingredientAssembler.toResources(taco.ingredients))
     }
 }
