@@ -1,6 +1,7 @@
 package kit.tacos.domain
 
 import org.hibernate.validator.constraints.CreditCardNumber
+import org.springframework.data.rest.core.annotation.RestResource
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
 import javax.persistence.Entity
@@ -32,6 +33,7 @@ data class Ingredient(
 }
 
 @Entity
+@RestResource(rel = "tacos", path = "tacos")
 data class Taco(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
