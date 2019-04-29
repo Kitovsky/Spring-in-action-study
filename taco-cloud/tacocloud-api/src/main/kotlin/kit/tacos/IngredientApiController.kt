@@ -38,12 +38,15 @@ class IngredientApiController(
 }
 
 data class IngredientResource(
+        val id: String,
         val name: String,
         val type: Ingredient.Type
 ) : ResourceSupport() {
     companion object {
         val ingredientAssembler = IngredientResourceAssembler()
-        fun from(ingredient: Ingredient) = IngredientResource(ingredient.name, ingredient.type)
+        fun from(ingredient: Ingredient) = IngredientResource(ingredient.id,
+                ingredient.name,
+                ingredient.type)
     }
 }
 

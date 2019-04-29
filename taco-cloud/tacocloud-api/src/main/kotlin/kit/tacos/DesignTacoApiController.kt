@@ -68,13 +68,15 @@ class TacoResourceAssembler
 
 @Relation(value = "taco", collectionRelation = "tacos")
 data class TacoResource(
+        val id: Long,
         val name: String,
         val createdAt: Date?,
         val ingredients: List<IngredientResource>
 ) : ResourceSupport() {
     companion object {
         val tacoResourceAssembler = TacoResourceAssembler()
-        fun from(taco: Taco) = TacoResource(taco.name,
+        fun from(taco: Taco) = TacoResource(taco.id,
+                taco.name,
                 taco.createdAt,
                 IngredientResource.ingredientAssembler.toResources(taco.ingredients))
     }
