@@ -70,17 +70,17 @@
       <div class="groupBox groupBoxHalf">
         <div class="groupBoxTitle">Deliver them to...</div>
         <div class="groupBoxContent">
-          <label for="deliveryName">Name: </label>
-          <input type="text" [(ngModel)]="model.deliveryName" name="deliveryName" size="40"/>
+          <label for="targetName">Name: </label>
+          <input type="text" [(ngModel)]="model.targetName" name="targetName" size="40"/>
           <br/>
 
-          <label for="deliveryStreet">Street address: </label>
-          <input type="text" [(ngModel)]="model.deliveryStreet" name="deliveryStreet" size="40"/>
+          <label for="street">Street address: </label>
+          <input type="text" [(ngModel)]="model.street" name="street" size="40"/>
           <br/>
 
-          <label for="deliveryCity">City / State: </label>
-          <input type="text" [(ngModel)]="model.deliveryCity" name="deliveryCity" size="30"/>
-          <select [(ngModel)]="model.deliveryState" name="deliveryState">
+          <label for="city">City / State: </label>
+          <input type="text" [(ngModel)]="model.city" name="city" size="30"/>
+          <select [(ngModel)]="model.state" name="state">
             <option value="">--</option>
             <option value="AL">AL</option>
             <option value="AK">AK</option>
@@ -135,8 +135,8 @@
           </select>
           <br/>
 
-          <label for="deliveryZip">Zip code: </label>
-          <input type="text" [(ngModel)]="model.deliveryZip" name="deliveryZip"/>
+          <label for="zip">Zip code: </label>
+          <input type="text" [(ngModel)]="model.zip" name="zip"/>
         </div>
       </div>
 

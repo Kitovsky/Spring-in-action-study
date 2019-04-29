@@ -17,11 +17,11 @@ class WebConfig : WebMvcConfigurer {
         registry.addViewController("/login")
     }
 
-    @Bean
-    fun tacoProcessor(links: EntityLinks) = ResourceProcessor<PagedResources<Resource<Taco>>> { resource ->
-        resource.add(
-                links.linkFor(Taco::class.java).slash(" recent").withRel("recents")
-        )
-        return@ResourceProcessor resource
-    }
+//    @Bean
+//    fun tacoProcessor(links: EntityLinks) = ResourceProcessor<PagedResources<Resource<Taco>>> { resource ->
+//        resource.add(
+//                links.linkFor(Taco::class.java).slash(" recent").withRel("recents")
+//        )
+//        return@ResourceProcessor resource
+//    }
 }

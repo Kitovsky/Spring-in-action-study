@@ -75,7 +75,7 @@ data class Order(
         @field:Size(min = 5, max = 50, message = "City must be from 5 to 50 characters")
         var city: String = "",
 
-        @field:Size(min = 5, max = 20, message = "State must be from 5 to 20 characters")
+        @field:Size(min = 1, max = 20, message = "State must be from 1 to 20 characters")
         var state: String = "",
 
         @field:Size(min = 5, max = 10, message = "Zip code must be from 5 to 10 characters")

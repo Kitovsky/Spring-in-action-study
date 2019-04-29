@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+  import { Component, OnInit, Injectable } from '@angular/core';
 import { CartService } from './cart-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -12,10 +12,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class CartComponent implements OnInit {
 
   model = {
-    deliveryName: '',
-    deliveryStreet: '',
-    deliveryState: '',
-    deliveryZip: '',
+    targetName: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
     ccNumber: '',
     ccExpiration: '',
     ccCVV: '',

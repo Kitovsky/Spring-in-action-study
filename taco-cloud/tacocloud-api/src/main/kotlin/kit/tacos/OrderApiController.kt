@@ -19,7 +19,7 @@ import org.springframework.web.client.HttpClientErrorException
 import java.util.Date
 
 @RestController
-@RequestMapping("/order", consumes = [APPLICATION_JSON_VALUE])
+@RequestMapping("/orders", consumes = [APPLICATION_JSON_VALUE])
 class OrderApiController(
         @Autowired private val orderRepo: OrderRepository
 ) {
