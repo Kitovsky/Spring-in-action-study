@@ -78,6 +78,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'propdeps'
 apply plugin: 'propdeps-idea'
 
+kapt.includeCompileClasspath = false
+
 sourceCompatibility = '1.8'
 
 dependencies {
