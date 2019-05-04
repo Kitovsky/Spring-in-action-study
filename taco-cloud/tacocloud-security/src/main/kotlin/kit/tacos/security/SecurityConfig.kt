@@ -25,10 +25,9 @@ class SecurityConfig(
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll() // needed for Angular/CORS
-                .antMatchers("/design", "/orders")
-                .permitAll()
+                .antMatchers("/design", "/orders").permitAll()
 //                .hasRole("USER")
-                .antMatchers(HttpMethod.PATCH, "/ingredients").permitAll()
+                .antMatchers("/ingredients").permitAll()
                 .antMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
@@ -42,7 +41,7 @@ class SecurityConfig(
                 .logoutSuccessUrl("/")
                 .and()
                 .csrf()
-                .ignoringAntMatchers("/h2-console/**", "/ingredients/**", "/design", "/orders/**")
+                .ignoringAntMatchers("/h2-console/**", "/ingredients/**", "/design", "/orders/**", "/test/**", "/api/**")
                 // Allow pages to be loaded in frames from the same origin; needed for H2-Console
                 .and()
                 .headers()

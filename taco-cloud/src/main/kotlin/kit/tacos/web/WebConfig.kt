@@ -1,12 +1,14 @@
 package kit.tacos.web
 
 import kit.tacos.domain.Taco
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.hateoas.EntityLinks
 import org.springframework.hateoas.PagedResources
 import org.springframework.hateoas.Resource
 import org.springframework.hateoas.ResourceProcessor
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -24,4 +26,7 @@ class WebConfig : WebMvcConfigurer {
 //        )
 //        return@ResourceProcessor resource
 //    }
+
+    @Bean
+    fun restTemplate(): RestTemplate = RestTemplateBuilder().build()
 }
