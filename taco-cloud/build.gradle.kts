@@ -1,10 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-    //    ext {
-//        val kotlinVersion = "1.3.31"
-//        set("springBootVersion" , "2.1.4.RELEASE")
-//    }
     val springBootVersion by extra("2.1.4.RELEASE")
     val kotlinVersion by extra("1.3.31")
     repositories {
@@ -73,7 +69,6 @@ allprojects {
         implementation(kotlin("stdlib-jdk8"))
         implementation(kotlin("reflect"))
 //        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-//        implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     }
 
