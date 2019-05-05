@@ -1,12 +1,10 @@
-package kit.tacos.kitchen.messaging.jms
+package kit.tacos.messaging
 
-import kit.tacos.Order
+import kit.tacos.domain.Order
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 
-@Profile(value = ["jms-template", "rabbitmq-template"])
 @Configuration
 class MessagingConfig {
     @Bean

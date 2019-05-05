@@ -92,6 +92,7 @@ dependencies {
     implementation(project(":tacocloud-api"))
     implementation(project(":tacocloud-data"))
     implementation(project(":tacocloud-security"))
+    implementation(project(":tacocloud-messaging-jms"))
     implementation("joda-time:joda-time:2.3")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -104,7 +105,7 @@ dependencies {
     runtime("com.h2database:h2")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
-    optional("org.springframework.boot:spring-boot-configuration-processor")
+    optional("org.springframework.boot:spring-boot-configuration-processor") //for docs in yaml configs for properties
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
