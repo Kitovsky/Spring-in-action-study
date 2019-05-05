@@ -17,14 +17,11 @@ buildscript {
 }
 
 plugins {
-//    idea
     kotlin("jvm") version "1.3.31"//fixme
     id("org.springframework.boot") version "2.1.4.RELEASE"
     kotlin("kapt") version "1.3.31"
     id("cn.bestwu.propdeps") version "0.0.10"
     id("cn.bestwu.propdeps-idea") version "0.0.10"
-//    kotlin("plugin.spring") version "1.3.31"
-//    id("io.spring.dependency-management") version "1.0.7.RELEASE"
 }
 
 kapt {
@@ -68,8 +65,6 @@ allprojects {
     dependencies {
         implementation(kotlin("stdlib-jdk8"))
         implementation(kotlin("reflect"))
-//        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
     }
 
     tasks.withType<KotlinCompile> {
@@ -81,12 +76,14 @@ allprojects {
 }
 
 subprojects {
-    tasks.bootJar {
-        enabled = false
-    }
+    if (this.name != "tacocloud-kitchen") {
+        tasks.bootJar {
+            enabled = false
+        }
 
-    tasks.jar {
-        enabled = true
+        tasks.jar {
+            enabled = true
+        }
     }
 }
 
