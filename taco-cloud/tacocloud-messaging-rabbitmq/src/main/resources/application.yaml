@@ -1,0 +1,4 @@
+spring:
+  rabbitmq:
+    template:
+      recieve-timeout: 30000
