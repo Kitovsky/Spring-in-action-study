@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 
-@Profile(value = ["jms-template", "rabbitmq-template"])
+@Profile(value = ["jms-template", "jms-listener"])
 @Configuration
 class MessagingConfig {
     @Bean
