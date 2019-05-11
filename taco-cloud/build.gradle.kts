@@ -9,7 +9,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
-//        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion")
         classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
@@ -76,7 +75,7 @@ allprojects {
 }
 
 subprojects {
-    if (this.name != "tacocloud-kitchen") {
+    if (name != "tacocloud-kitchen") {
         tasks.bootJar {
             enabled = false
         }
@@ -94,6 +93,7 @@ dependencies {
     implementation(project(":tacocloud-security"))
     implementation(project(":tacocloud-messaging-jms"))
     implementation(project(":tacocloud-messaging-rabbitmq"))
+    implementation(project(":tacocloud-messaging-kafka"))
     implementation("joda-time:joda-time:2.3")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")

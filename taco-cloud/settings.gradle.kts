@@ -6,5 +6,6 @@ include ("tacocloud-security")
 include ("tacocloud-kitchen")
 include ("tacocloud-messaging-jms")
 include ("tacocloud-messaging-rabbitmq")
+include ("tacocloud-messaging-kafka")
 //kapt.incremental.apt=true
 
