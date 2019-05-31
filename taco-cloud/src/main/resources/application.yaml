@@ -9,6 +9,8 @@ logging:
         security: DEBUG
 
 spring:
+  profiles:
+    include: jms
   data:
     rest:
       base-path: /api

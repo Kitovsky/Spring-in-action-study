@@ -2,6 +2,7 @@ package kit.tacos
 
 import kit.tacos.data.OrderRepository
 import kit.tacos.domain.Order
+import kit.tacos.messaging.OrderMessagingService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -21,7 +22,8 @@ import java.util.Date
 @RestController
 @RequestMapping("/orders", consumes = [APPLICATION_JSON_VALUE])
 class OrderApiController(
-        @Autowired private val orderRepo: OrderRepository
+        @Autowired private val orderRepo: OrderRepository,
+        @Autowired private val messagingService: OrderMessagingService
 ) {
 
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
@@ -29,12 +31,13 @@ class OrderApiController(
 
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
-    fun postOrder(@RequestBody order: Order): Order = orderRepo.save(order)
-
-    @PutMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
-    fun putOrder(@RequestBody order: Order): Order {
+    fun postOrder(@RequestBody order: Order): Order {
+        messagingService.sendOrder(order)
         return orderRepo.save(order)
     }
+
+    @PutMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
+    fun putOrder(@RequestBody order: Order): Order = orderRepo.save(order)
 
     @PatchMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
     fun patchOrder(@PathVariable("orderId") orderId: Long,
@@ -54,9 +57,7 @@ class OrderApiController(
 
     @DeleteMapping("/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteOrder(@PathVariable("orderId") orderId: Long) {
-        orderRepo.deleteById(orderId)
-    }
+    fun deleteOrder(@PathVariable("orderId") orderId: Long) = orderRepo.deleteById(orderId)
 
     data class OrderDto(
             var id: Long?,

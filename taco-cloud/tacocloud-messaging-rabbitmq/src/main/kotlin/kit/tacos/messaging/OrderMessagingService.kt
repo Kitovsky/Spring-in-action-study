@@ -1,6 +1,6 @@
 package kit.tacos.messaging
 
-import org.springframework.core.annotation.Order
+import kit.tacos.domain.Order
 
 interface OrderMessagingService {
     fun sendOrder(order: Order)

@@ -93,8 +93,8 @@ dependencies {
     implementation(project(":tacocloud-data"))
     implementation(project(":tacocloud-security"))
     implementation(project(":tacocloud-messaging-jms"))
-    implementation(project(":tacocloud-messaging-rabbitmq"))
-    implementation(project(":tacocloud-messaging-kafka"))
+//    implementation(project(":tacocloud-messaging-rabbitmq")) // do not use
+//    implementation(project(":tacocloud-messaging-kafka")) // do not use
     implementation("joda-time:joda-time:2.3")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
