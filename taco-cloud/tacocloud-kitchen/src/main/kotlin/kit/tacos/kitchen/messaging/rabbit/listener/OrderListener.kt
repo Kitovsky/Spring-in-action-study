@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
-@Profile("jms-listener")
+@Profile("rabbit-listener")
 @Service
 class OrderListener(
         @Autowired val ui: KitchenUI
