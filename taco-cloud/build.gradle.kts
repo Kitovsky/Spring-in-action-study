@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-    val springBootVersion by extra("2.1.5.RELEASE")
+    val springBootVersion by extra("2.1.6.RELEASE")
     val kotlinVersion by extra("1.3.31")
     repositories {
         mavenCentral()
@@ -17,7 +17,7 @@ buildscript {
 
 plugins {
     kotlin("jvm") version "1.3.31"//fixme
-    id("org.springframework.boot") version "2.1.5.RELEASE"
+    id("org.springframework.boot") version "2.1.6.RELEASE"
     kotlin("kapt") version "1.3.31"
     id("cn.bestwu.propdeps") version "0.0.10"
     id("cn.bestwu.propdeps-idea") version "0.0.10"
@@ -76,7 +76,8 @@ allprojects {
 }
 
 subprojects {
-    if (name != "tacocloud-kitchen") {
+    if (name != "tacocloud-kitchen"
+            || name != "dataflow") {
         tasks.bootJar {
             enabled = false
         }
