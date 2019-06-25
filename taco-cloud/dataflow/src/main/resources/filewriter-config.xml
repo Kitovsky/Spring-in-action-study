@@ -20,7 +20,7 @@
 
     <int-file:outbound-channel-adapter id="writer"
                                        channel="fileOutputChannel"
-                                       directory="/output/result"
+                                       directory="xml_result"
                                        mode="APPEND"
                                        append-new-line="true"/>
 

@@ -18,7 +18,7 @@ import java.io.File
 @Configuration
 class FileWriterIntegrationConfig {
 
-    val filePath = "/output/result"
+    val filePath = "my_result"
 
     @Profile("javaconfig")
     @Bean
@@ -45,7 +45,6 @@ class FileWriterIntegrationConfig {
                     .fileExistsMode(FileExistsMode.APPEND)
                     .appendNewLine(true))
             .get()
-
 }
 
 @Profile("xmlconfig")
