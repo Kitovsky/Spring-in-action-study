@@ -1,0 +1,15 @@
+spring:
+  main:
+    web-application-type: none
+
+tacocloud:
+  api:
+    url: changeme
+
+  email:
+    host: imap.tacocloud.com
+    mailbox: KITBOX
+    username: kit-flow
+    password: 123
+    poll-rate: 10000
+

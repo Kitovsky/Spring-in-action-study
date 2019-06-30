@@ -8,5 +8,6 @@ include ("tacocloud-messaging-jms")
 include ("tacocloud-messaging-rabbitmq")
 include ("tacocloud-messaging-kafka")
 include ("dataflow")
+include ("tacocloud-email")
 //kapt.incremental.apt=true
 

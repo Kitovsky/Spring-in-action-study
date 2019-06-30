@@ -77,7 +77,8 @@ allprojects {
 
 subprojects {
     if (name != "tacocloud-kitchen"
-            || name != "dataflow") {
+            || name != "dataflow"
+            || name != "tacocloud-email") {
         tasks.bootJar {
             enabled = false
         }
