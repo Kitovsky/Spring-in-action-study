@@ -18,6 +18,7 @@ class User(
         val state: String = "",
         val zip: String = "",
         val phoneNumber: String = "",
+        val email: String = "",
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)

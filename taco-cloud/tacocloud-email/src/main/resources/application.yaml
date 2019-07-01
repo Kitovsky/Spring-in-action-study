@@ -4,7 +4,7 @@ spring:
 
 tacocloud:
   api:
-    url: changeme
+    url: http://localhost:8085/orders/fromEmail
 
   email:
     host: imap.tacocloud.com

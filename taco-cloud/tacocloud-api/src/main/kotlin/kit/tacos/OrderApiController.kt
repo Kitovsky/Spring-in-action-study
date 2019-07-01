@@ -2,6 +2,7 @@ package kit.tacos
 
 import kit.tacos.data.OrderRepository
 import kit.tacos.domain.Order
+import kit.tacos.dto.EmailOrder
 import kit.tacos.messaging.OrderMessagingService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -23,7 +24,8 @@ import java.util.Date
 @RequestMapping("/orders", consumes = [APPLICATION_JSON_VALUE])
 class OrderApiController(
         @Autowired private val orderRepo: OrderRepository,
-        @Autowired private val messagingService: OrderMessagingService
+        @Autowired private val messagingService: OrderMessagingService,
+        @Autowired private val emailOrderService: EmailOrderService
 ) {
 
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
@@ -34,6 +36,13 @@ class OrderApiController(
     fun postOrder(@RequestBody order: Order): Order {
         messagingService.sendOrder(order)
         return orderRepo.save(order)
+    }
+
+    @PostMapping("/fromEmail", consumes = [APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.CREATED)
+    fun fromEmail(@RequestBody emailOrder: EmailOrder) = emailOrderService.convertEmail2Order(emailOrder).let {
+        messagingService::sendOrder
+        orderRepo::save
     }
 
     @PutMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
