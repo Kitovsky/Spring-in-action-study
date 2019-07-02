@@ -9,6 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebConfig : WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
-        registry.addRedirectViewController("/", "/orders/receive")
+        registry.addRedirectViewController("/", "/order/receive")
     }
 }

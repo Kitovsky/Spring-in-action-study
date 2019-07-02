@@ -7,9 +7,10 @@ tacocloud:
     url: http://localhost:8085/orders/fromEmail
 
   email:
-    host: imap.tacocloud.com
-    mailbox: KITBOX
-    username: kit-flow
-    password: 123
+    host: imap.yandex.ru:993
+    mailbox: inbox
+    username: dmitrytesttest
+    password: changeMe
     poll-rate: 10000
-
+server:
+  port: 8087

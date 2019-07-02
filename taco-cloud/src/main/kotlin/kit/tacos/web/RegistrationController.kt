@@ -34,11 +34,12 @@ data class RegistrationForm(
         var city: String,
         var state: String,
         var zip: String,
-        var phone: String
+        var phone: String,
+        var email: String
 
 ) {
     fun toUser(passwordEncoder: PasswordEncoder): User =
             User(username, passwordEncoder.encode(password),
-                    fullname, street, city, state, zip, phone)
+                    fullname, street, city, state, zip, phone, email)
 
 }

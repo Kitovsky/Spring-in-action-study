@@ -8,10 +8,10 @@ import org.springframework.integration.dsl.StandardIntegrationFlow
 import org.springframework.integration.mail.dsl.Mail
 
 @Configuration
-class MailFlowConfig {
+class FlowConfig {
 
     @Bean
-    fun mailFlowConfig(
+    fun emailFlowConfig(
             mailProperties: EmailProperties,
             email2OrderTransformer: Email2OrderTransformer,
             orderSubmitMessageHandler: OrderSubmitMessageHandler

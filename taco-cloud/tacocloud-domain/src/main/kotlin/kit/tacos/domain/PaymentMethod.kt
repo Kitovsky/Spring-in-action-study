@@ -8,13 +8,14 @@ import javax.persistence.ManyToOne
 
 @Entity
 data class PaymentMethod(
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long = 0,
 
         @ManyToOne
         val user: User,
         val ccNumber: String,
         val ccCVV: String,
-        val ccExpiration: String
+        val ccExpiration: String,
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var id: Long = 0
 )

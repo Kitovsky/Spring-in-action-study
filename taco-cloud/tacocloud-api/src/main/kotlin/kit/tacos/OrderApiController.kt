@@ -41,8 +41,8 @@ class OrderApiController(
     @PostMapping("/fromEmail", consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun fromEmail(@RequestBody emailOrder: EmailOrder) = emailOrderService.convertEmail2Order(emailOrder).let {
-        messagingService::sendOrder
-        orderRepo::save
+        messagingService.sendOrder(it)
+        orderRepo.save(it)
     }
 
     @PutMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])

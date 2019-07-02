@@ -3,28 +3,28 @@ package kit.tacos.email
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
-@Component
 @ConfigurationProperties("tacocloud.email")
+@Component
 class EmailProperties(
         /**
          * Email user name.
          */
-        var username: String,
+        var username: String = "",
 
         /**
          * Password from email box.
          */
-        var password: String,
+        var password: String = "",
 
         /**
          * Email service host.
          */
-        var host: String,
+        var host: String = "",
 
         /**
          * Mail box name.
          */
-        var mailbox: String,
+        var mailbox: String = "",
 
         /**
          * Poll rate for email service (ms). Default value 30s (30000ms).

@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.CreditCardNumber
 import org.springframework.data.rest.core.annotation.RestResource
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -91,7 +92,7 @@ data class Order(
         @field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
         var ccCVV: String = "",
 
-        @ManyToMany(targetEntity = Taco::class)
+        @ManyToMany(targetEntity = Taco::class, cascade = [CascadeType.ALL])
         @field:Size(min = 1, message = "You must choose at least 1 taco")
         var tacos: MutableList<Taco> = mutableListOf(),
 
