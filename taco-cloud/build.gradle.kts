@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     val springBootVersion by extra("2.1.6.RELEASE")
-    val kotlinVersion by extra("1.3.31")
+    val kotlinVersion by extra("1.3.41")
     repositories {
         mavenCentral()
         maven(url = "http://repo.spring.io/plugins-release")
@@ -16,9 +16,9 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.3.31"//fixme
+    kotlin("jvm") version "1.3.41"//fixme
     id("org.springframework.boot") version "2.1.6.RELEASE"
-    kotlin("kapt") version "1.3.31"
+    kotlin("kapt") version "1.3.41"
     id("cn.bestwu.propdeps") version "0.0.10"
     id("cn.bestwu.propdeps-idea") version "0.0.10"
 }
@@ -36,9 +36,9 @@ allprojects {
 //    plugins {
 ////        kotlin("jvm")
 //        idea
-////        id("org.springframework.boot") version "2.1.4.RELEASE"
+////        id("org.springframework.boot") version "2.1.6.RELEASE"
 ////        kotlin("spring")
-////        id("io.spring.dependency-management") version "1.0.7.RELEASE"
+////        id("io.spring.dependency-management") version "1.0.8.RELEASE"
 //    }
     apply(plugin = "idea")
     apply(plugin = "kotlin")
@@ -117,4 +117,3 @@ dependencies {
     testImplementation("org.seleniumhq.selenium:htmlunit-driver")
     testImplementation("org.seleniumhq.selenium:selenium-java")
 }
-
