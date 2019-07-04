@@ -15,7 +15,7 @@ buildscript {
 plugins {
     kotlin("jvm") version "1.3.41"
     idea
-    id("io.spring.dependency-management") version "1.0.8.RELEASE"
+//    id("io.spring.dependency-management") version "1.0.8.RELEASE"
 }
 
 group = "kit"
@@ -30,8 +30,15 @@ tasks.test {
 }
 
 dependencies {
+    implementation(platform("io.projectreactor:reactor-bom:Bismuth-RELEASE"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation("io.projectreactor:reactor-core")
+
+    testImplementation(platform("org.junit:junit-bom:5.5.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("io.projectreactor:reactor-test")
 }
 
 tasks.withType<KotlinCompile> {

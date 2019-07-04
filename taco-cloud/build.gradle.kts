@@ -44,7 +44,7 @@ allprojects {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
     apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "io.spring.dependency-management") // mb disable?
 
     idea {
         module {
@@ -62,6 +62,7 @@ allprojects {
     }
 
     dependencies {
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE"))
         implementation(kotlin("stdlib-jdk8"))
         implementation(kotlin("reflect"))
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
