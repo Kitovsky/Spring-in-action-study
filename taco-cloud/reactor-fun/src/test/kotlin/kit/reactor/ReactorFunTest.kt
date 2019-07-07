@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import java.time.Duration
+import java.util.function.BiFunction
 import java.util.stream.Stream
 
 internal class ReactorFunTest {
@@ -68,6 +69,63 @@ internal class ReactorFunTest {
                 .expectNext(2)
                 .expectNext(3)
                 .expectNext(4)
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun mergeFluxes() {
+        val characterFlux = Flux.just("Garfield", "Kojak", "Barbossa")
+                .delayElements(Duration.ofMillis(500))
+        val foodFlux = Flux.just("Lasagna", "Lollipops", "Apples")
+                .delaySubscription(Duration.ofMillis(250))
+                .delayElements(Duration.ofMillis(500))
+        val mergeFlux = characterFlux.mergeWith(foodFlux)
+        StepVerifier.create(mergeFlux)
+                .expectNext("Garfield")
+                .expectNext("Lasagna")
+                .expectNext("Kojak")
+                .expectNext("Lollipops")
+                .expectNext("Barbossa")
+                .expectNext("Apples")
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun zipFlux() {
+        val characterFlux = Flux.just("Garfield", "Kojak", "Barbossa")
+        val foodFlux = Flux.just("Lasagna", "Lollipops", "Apples")
+        val zipFlux = Flux.zip(characterFlux, foodFlux)
+        StepVerifier.create(zipFlux)
+                .expectNextMatches { it.t1 == "Garfield" && it.t2 == "Lasagna" }
+                .expectNextMatches { it.t1 == "Kojak" && it.t2 == "Lollipops" }
+                .expectNextMatches { it.t1 == "Barbossa" && it.t2 == "Apples" }
+                .verifyComplete()
+
+    }
+
+    @Test
+    internal fun zipFluxes2Object() {
+        val characterFlux = Flux.just("Garfield", "Kojak", "Barbossa")
+        val foodFlux = Flux.just("Lasagna", "Lollipops", "Apples")
+        val zipFlux = Flux.zip(characterFlux, foodFlux, BiFunction { c: String, f: String -> "$c eats $f" })
+        StepVerifier.create(zipFlux)
+                .expectNext("Garfield eats Lasagna")
+                .expectNext("Kojak eats Lollipops")
+                .expectNext("Barbossa eats Apples")
+                .verifyComplete()
+
+    }
+
+    @Test
+    internal fun firstFlux() {
+        val slowFlux = Flux.just("tortoise", "snail", "sloth")
+                .delaySubscription(Duration.ofMillis(100))
+        val fastFlux = Flux.just("hare", "cheetah", "squirrel")
+        val firstFlux = Flux.first(slowFlux, fastFlux)
+        StepVerifier.create(firstFlux)
+                .expectNext("hare")
+                .expectNext("cheetah")
+                .expectNext("squirrel")
                 .verifyComplete()
     }
 }
