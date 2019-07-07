@@ -2,6 +2,8 @@ package kit.reactor
 
 import org.junit.jupiter.api.Test
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.core.scheduler.Schedulers
 import reactor.test.StepVerifier
 import java.time.Duration
 import java.util.function.BiFunction
@@ -126,6 +128,184 @@ internal class ReactorFunTest {
                 .expectNext("hare")
                 .expectNext("cheetah")
                 .expectNext("squirrel")
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun skipFewFlux() {
+        val skipFlux = Flux.just("one", "two", "skip", "ninety nine", "one hundred")
+                .skip(3)
+        StepVerifier.create(skipFlux)
+                .expectNext("ninety nine")
+                .expectNext("one hundred")
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun skipSecondsFlux() {
+        val skipFlux = Flux.just("one", "two", "skip", "ninety nine", "one hundred")
+                .delayElements(Duration.ofSeconds(1))
+                .skip(Duration.ofSeconds(4))
+        StepVerifier.create(skipFlux)
+                .expectNext("ninety nine")
+                .expectNext("one hundred")
+                .verifyComplete()
+
+    }
+
+    @Test
+    internal fun takeFewFlux() {
+        val takeFlux = Flux.just("Yellowstone", "Yosemite", "Grand Canyon", "Zion", "Grand Teton")
+                .take(3)
+        StepVerifier.create(takeFlux)
+                .expectNext("Yellowstone", "Yosemite", "Grand Canyon")
+                .verifyComplete()
+
+    }
+
+    @Test
+    internal fun takeSecondsFlux() {
+        val takeFlux = Flux.just("Yellowstone", "Yosemite", "Grand Canyon", "Zion", "Grand Teton")
+                .delayElements(Duration.ofSeconds(1))
+                .take(Duration.ofMillis(3500))
+        StepVerifier.create(takeFlux)
+                .expectNext("Yellowstone", "Yosemite", "Grand Canyon")
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun noSpaceFilter() {
+        val filerFlux = Flux.just("Yellowstone", "Yosemite", "Grand Canyon", "Zion", "Grand Teton")
+                .filter { !it.contains(" ") }
+        StepVerifier.create(filerFlux)
+                .expectNext("Yellowstone", "Yosemite", "Zion")
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun distinctFlux() {
+        val distinctFlux = Flux.just("dog", "bird", "cat", "dog", "snake", "bird")
+                .distinct()
+        StepVerifier.create(distinctFlux)
+                .expectNext("dog", "bird", "cat", "snake")
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun mapFlux() {
+        val mapFlux = Flux.just("Michael Jordan", "Scottie Pippen", "Steve Kerr")
+                .map { Player(it.substringBefore(" "), it.substringAfter(" ")) }
+        StepVerifier.create(mapFlux)
+                .expectNext(Player("Michael", "Jordan"))
+                .expectNext(Player("Scottie", "Pippen"))
+                .expectNext(Player("Steve", "Kerr"))
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun flatMapFlux() {
+        val flatMapFlux = Flux.just("Michael Jordan", "Scottie Pippen", "Steve Kerr")
+                .flatMap { s ->
+                    Mono.just(s)
+                            .map { Player(it.substringBefore(" "), it.substringAfter(" ")) }
+                            .subscribeOn(Schedulers.parallel())
+                }
+        val players = listOf(Player("Michael", "Jordan"),
+                Player("Scottie", "Pippen"),
+                Player("Steve", "Kerr"))
+        StepVerifier.create(flatMapFlux)
+                .expectNextMatches { players.contains(it) }
+                .expectNextMatches { players.contains(it) }
+                .expectNextMatches { players.contains(it) }
+                .verifyComplete()
+
+    }
+
+    private data class Player(val name: String, val surename: String)
+
+    @Test
+    internal fun bufferFlux() {
+        val flux = Flux.just("orange", "apple", "banana", "kiwi", "strawberry")
+        val bufferFlux = flux.buffer(3)
+        StepVerifier.create(bufferFlux)
+                .expectNext(listOf("orange", "apple", "banana"))
+                .expectNext(listOf("kiwi", "strawberry"))
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun flatMapBufferFlux() {
+        val flux = Flux.just("orange", "apple", "banana", "kiwi", "strawberry")
+                .buffer(3)
+                .flatMap {
+                    Flux.fromIterable(it)
+                            .map(String::toUpperCase)
+                            .subscribeOn(Schedulers.parallel())
+                            .log()
+                }
+        val fruits = listOf("orange", "apple", "banana", "kiwi", "strawberry").map(String::toUpperCase)
+        StepVerifier.create(flux)
+                .expectNextMatches(fruits::contains)
+                .expectNextMatches(fruits::contains)
+                .expectNextMatches(fruits::contains)
+                .expectNextMatches(fruits::contains)
+                .expectNextMatches(fruits::contains)
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun collectFlux() {
+        val fruitFlux = Flux.just("orange", "apple", "banana", "kiwi", "strawberry")
+        val flux: Flux<List<String>> = fruitFlux.buffer()
+        StepVerifier.create(flux)
+                .expectNext(listOf("orange", "apple", "banana", "kiwi", "strawberry"))
+                .verifyComplete()
+
+        val mono: Mono<List<String>> = fruitFlux.collectList()
+        StepVerifier.create(mono)
+                .expectNext(listOf("orange", "apple", "banana", "kiwi", "strawberry"))
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun collectMapFlux() {
+        val animalFlux = Flux.just("aardvark", "elephant", "koala", "eagle", "kangaroo")
+        val mono: Mono<Map<Char, String>> = animalFlux.collectMap { it[0] }
+        StepVerifier.create(mono)
+                .expectNextMatches {
+                    it.size == 3
+                            && it['a'] == "aardvark"
+                            && it['e'] == "eagle"
+                            && it['k'] == "kangaroo"
+                }
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun allFlux() {
+        val animalFlux = Flux.just("aardvark", "elephant", "koala", "eagle", "kangaroo")
+        val trueMono = animalFlux.all { it.contains('a') }
+        StepVerifier.create(trueMono)
+                .expectNext(true)
+                .verifyComplete()
+
+        val falseMono = animalFlux.all{ it.contains('k')}
+        StepVerifier.create(falseMono)
+                .expectNext(false)
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun anyFlux() {
+        val animalFlux = Flux.just("aardvark", "elephant", "koala", "eagle", "kangaroo")
+        val trueMono = animalFlux.any { it.contains('t') }
+        StepVerifier.create(trueMono)
+                .expectNext(true)
+                .verifyComplete()
+
+        val falseMono = animalFlux.any{ it.contains('z')}
+        StepVerifier.create(falseMono)
+                .expectNext(false)
                 .verifyComplete()
     }
 }
