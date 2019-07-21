@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping(path = ["/design"], produces = [APPLICATION_JSON_VALUE])
@@ -34,24 +36,18 @@ class DesignTacoApiController(
 //    }
 
     @GetMapping("/recent")
-    fun recentTacos(): Iterable<Taco> {
+    fun recentTacos(): Flux<Taco> {
         val pageRequest = PageRequest.of(0, 12, Sort.by("createdAt").descending())
-        return tacoRepo.findAll(pageRequest).content
+        return Flux.fromIterable(tacoRepo.findAll(pageRequest).content)
     }
 
     @GetMapping("/{id}")
-    fun tacoById(@PathVariable("id") id: Long): ResponseEntity<Taco?> {
-        val optional = tacoRepo.findById(id)
-        return if (optional.isPresent) {
-            ResponseEntity.ok(optional.get())
-        } else {
-            ResponseEntity.notFound().build()
-        }
-    }
+    fun tacoById(@PathVariable("id") id: Long): Mono<ResponseEntity<Taco?>> =
+            Mono.justOrEmpty(tacoRepo.findById(id))
+                    .map { ResponseEntity.ok(it) }
+                    .defaultIfEmpty(ResponseEntity.notFound().build())
 
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
-    fun postTaco(@RequestBody taco: Taco): Taco {
-        return tacoRepo.save(taco)
-    }
+    fun postTaco(@RequestBody taco: Mono<Taco>): Mono<Taco> = taco.map(tacoRepo::save)
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.HttpClientErrorException
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.util.Date
 
 @RestController
@@ -29,40 +31,42 @@ class OrderApiController(
 ) {
 
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
-    fun allOrders(): Iterable<Order> = orderRepo.findAll()
+    fun allOrders(): Flux<Order> = Flux.fromIterable(orderRepo.findAll())
 
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
-    fun postOrder(@RequestBody order: Order): Order {
-        messagingService.sendOrder(order)
-        return orderRepo.save(order)
+    fun postOrder(@RequestBody order: Mono<Order>): Mono<Order> {
+        order.subscribe(messagingService::sendOrder)
+        return order.map(orderRepo::save)
     }
 
     @PostMapping("/fromEmail", consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
-    fun fromEmail(@RequestBody emailOrder: EmailOrder) = emailOrderService.convertEmail2Order(emailOrder).let {
-        messagingService.sendOrder(it)
-        orderRepo.save(it)
+    fun fromEmail(@RequestBody emailOrder: Mono<EmailOrder>): Mono<Order> {
+        val order = emailOrderService.convertEmail2Order(emailOrder)
+        order.subscribe(messagingService::sendOrder)
+        return order.map(orderRepo::save)
     }
 
     @PutMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
-    fun putOrder(@RequestBody order: Order): Order = orderRepo.save(order)
+    fun putOrder(@RequestBody order: Mono<Order>): Mono<Order> = order.map(orderRepo::save)
 
     @PatchMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
     fun patchOrder(@PathVariable("orderId") orderId: Long,
-                   @RequestBody patch: OrderDto): Order {
-        val order = orderRepo.findById(orderId)
-                .orElseThrow { HttpClientErrorException(HttpStatus.NOT_FOUND) }
-        patch.targetName?.let { order.targetName = it }
-        patch.street?.let { order.street = it }
-        patch.city?.let { order.city = it }
-        patch.state?.let { order.state = it }
-        patch.zip?.let { order.zip = it }
-        patch.ccNumber?.let { order.ccNumber = it }
-        patch.ccExpiration?.let { order.ccExpiration = it }
-        patch.ccCVV?.let { order.ccCVV = it }
-        return orderRepo.save(order)
-    }
+                   @RequestBody patchMono: Mono<OrderDto>): Mono<Order> =
+            patchMono.flatMap { patch ->
+                Mono.justOrEmpty(orderRepo.findById(orderId))
+                        .doOnNext { order -> patch.targetName?.let { order.targetName = it } }
+                        .doOnNext { order -> patch.street?.let { order.street = it } }
+                        .doOnNext { order -> patch.city?.let { order.city = it } }
+                        .doOnNext { order -> patch.state?.let { order.state = it } }
+                        .doOnNext { order -> patch.zip?.let { order.zip = it } }
+                        .doOnNext { order -> patch.ccNumber?.let { order.ccNumber = it } }
+                        .doOnNext { order -> patch.ccExpiration?.let { order.ccExpiration = it } }
+                        .doOnNext { order -> patch.ccCVV?.let { order.ccCVV = it } }
+                        .map(orderRepo::save)
+                        .switchIfEmpty(Mono.error(HttpClientErrorException(HttpStatus.NOT_FOUND)))
+            }
 
     @DeleteMapping("/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

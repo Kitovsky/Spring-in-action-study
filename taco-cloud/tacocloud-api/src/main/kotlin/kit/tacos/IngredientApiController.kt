@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/ingredients", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -24,16 +26,12 @@ class IngredientApiController(
 //    }
 
     @GetMapping
-    fun allIngredients(): Iterable<Ingredient> = ingredientRepo.findAll()
+    fun allIngredients(): Flux<Ingredient> = Flux.fromIterable(ingredientRepo.findAll())
 
     @GetMapping("/{id}")
-    fun ingredientById(@PathVariable("id") id: String): ResponseEntity<Ingredient?> {
-        val optional = ingredientRepo.findById(id)
-        return if (optional.isPresent) {
-            ResponseEntity.ok(optional.get())
-        } else {
-            ResponseEntity.notFound().build()
-        }
-    }
+    fun ingredientById(@PathVariable("id") id: String): Mono<ResponseEntity<Ingredient?>> =
+            Mono.justOrEmpty(ingredientRepo.findById(id))
+                    .map { ResponseEntity.ok(it) }
+                    .defaultIfEmpty(ResponseEntity.notFound().build())
 
 }

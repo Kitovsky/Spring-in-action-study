@@ -23,7 +23,7 @@ class RecentTacosController(
 ) {
 
     @GetMapping(path = ["/tacos/recent"], produces = ["application/hal+json"])
-    fun recentTacos(): ResponseEntity<Resources<TacoResource>> {
+    fun recentTacos(): ResponseEntity<Resources<TacoResource>> { //TODO make with flux
         val page = PageRequest.of(0, 12, Sort.by("createdAt").descending())
         val tacos = tacoRepo.findAll(page).content
         val recentResources = Resources<TacoResource>(TacoResource.tacoResourceAssembler.toResources(tacos))
