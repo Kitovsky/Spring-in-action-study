@@ -36,20 +36,20 @@ class OrderApiController(
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun postOrder(@RequestBody order: Mono<Order>): Mono<Order> {
-        order.subscribe(messagingService::sendOrder)
-        return order.map(orderRepo::save)
+        order.subscribe(messagingService::sendOrder) // mb replace with doOnNext
+        return order.map { orderRepo.save(it) }
     }
 
     @PostMapping("/fromEmail", consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun fromEmail(@RequestBody emailOrder: Mono<EmailOrder>): Mono<Order> {
         val order = emailOrderService.convertEmail2Order(emailOrder)
-        order.subscribe(messagingService::sendOrder)
-        return order.map(orderRepo::save)
+        order.subscribe(messagingService::sendOrder) // mb replace with doOnNext
+        return order.map { orderRepo.save(it) }
     }
 
     @PutMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
-    fun putOrder(@RequestBody order: Mono<Order>): Mono<Order> = order.map(orderRepo::save)
+    fun putOrder(@RequestBody order: Mono<Order>): Mono<Order> = order.map { orderRepo.save(it) }
 
     @PatchMapping("/{orderId}", consumes = [APPLICATION_JSON_VALUE])
     fun patchOrder(@PathVariable("orderId") orderId: Long,
@@ -64,7 +64,7 @@ class OrderApiController(
                         .doOnNext { order -> patch.ccNumber?.let { order.ccNumber = it } }
                         .doOnNext { order -> patch.ccExpiration?.let { order.ccExpiration = it } }
                         .doOnNext { order -> patch.ccCVV?.let { order.ccCVV = it } }
-                        .map(orderRepo::save)
+                        .map { orderRepo.save(it) }
                         .switchIfEmpty(Mono.error(HttpClientErrorException(HttpStatus.NOT_FOUND)))
             }
 

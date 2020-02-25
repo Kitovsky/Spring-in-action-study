@@ -49,5 +49,5 @@ class DesignTacoApiController(
 
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
-    fun postTaco(@RequestBody taco: Mono<Taco>): Mono<Taco> = taco.map(tacoRepo::save)
+    fun postTaco(@RequestBody taco: Mono<Taco>): Mono<Taco> = taco.map { tacoRepo.save(it) }
 }

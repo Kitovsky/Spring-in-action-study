@@ -1,32 +1,33 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-    val springBootVersion by extra("2.1.6.RELEASE")
-    val kotlinVersion by extra("1.3.41")
+    val springBootVersion by extra("2.2.4.RELEASE")
+    val kotlinVersion by extra("1.3.60")
     repositories {
         mavenCentral()
-        maven(url = "http://repo.spring.io/plugins-release")
+        jcenter()
+//        maven(url = "http://repo.spring.io/plugins-release")
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
         classpath("org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion")
-        classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
+//        classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
     }
 }
 
 plugins {
-    kotlin("jvm") version "1.3.41"//fixme
-    id("org.springframework.boot") version "2.1.6.RELEASE"
-    kotlin("kapt") version "1.3.41"
-    id("cn.bestwu.propdeps") version "0.0.10"
-    id("cn.bestwu.propdeps-idea") version "0.0.10"
+    kotlin("jvm") version "1.3.60"//fixme
+    id("org.springframework.boot") version "2.2.4.RELEASE"
+    kotlin("kapt") version "1.3.60"
+//    id("cn.bestwu.propdeps") version "0.0.10"
+//    id("cn.bestwu.propdeps-idea") version "0.0.10"
 }
 
-kapt {
-    useBuildCache = true
-    includeCompileClasspath = false
-}
+//kapt {
+//    useBuildCache = true
+//    includeCompileClasspath = false
+//}
 
 allprojects {
 
@@ -46,12 +47,12 @@ allprojects {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management") // mb disable?
 
-    idea {
-        module {
-            inheritOutputDirs = false
-            outputDir = file("$buildDir/classes/kotlin/main")
-        }
-    }
+//    idea { // fixme
+//        module {
+//            inheritOutputDirs = false
+//            outputDir = file("$buildDir/classes/kotlin/main")
+//        }
+//    }
 
     repositories {
         mavenCentral()
@@ -62,7 +63,7 @@ allprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:2.2.4.RELEASE"))
         implementation(kotlin("stdlib-jdk8"))
         implementation(kotlin("reflect"))
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -109,8 +110,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     runtime("com.h2database:h2")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-    optional("org.springframework.boot:spring-boot-configuration-processor") //for docs in yaml configs for properties
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+//    optional("org.springframework.boot:spring-boot-configuration-processor") //for docs in yaml configs for properties
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api")

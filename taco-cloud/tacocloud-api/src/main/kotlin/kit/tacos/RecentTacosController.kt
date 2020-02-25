@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.rest.webmvc.RepositoryRestController
-import org.springframework.hateoas.ResourceSupport
-import org.springframework.hateoas.Resources
-import org.springframework.hateoas.core.Relation
-import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
-import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport
+import org.springframework.hateoas.CollectionModel
+import org.springframework.hateoas.RepresentationModel
+import org.springframework.hateoas.server.core.Relation
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import java.util.Date
@@ -23,22 +23,22 @@ class RecentTacosController(
 ) {
 
     @GetMapping(path = ["/tacos/recent"], produces = ["application/hal+json"])
-    fun recentTacos(): ResponseEntity<Resources<TacoResource>> { //TODO make with flux
+    fun recentTacos(): ResponseEntity<CollectionModel<TacoResource>> { //TODO make with flux
         val page = PageRequest.of(0, 12, Sort.by("createdAt").descending())
         val tacos = tacoRepo.findAll(page).content
-        val recentResources = Resources<TacoResource>(TacoResource.tacoResourceAssembler.toResources(tacos))
+        val recentResources = CollectionModel<TacoResource>(TacoResource.tacoResourceAssembler.toCollectionModel(tacos))
         recentResources.add(linkTo(methodOn(this::class.java).recentTacos()).withRel("recents"))
         return ResponseEntity.ok(recentResources)
     }
 }
 
 class TacoResourceAssembler
-    : ResourceAssemblerSupport<Taco, TacoResource>(DesignTacoApiController::class.java,
+    : RepresentationModelAssemblerSupport<Taco, TacoResource>(DesignTacoApiController::class.java,
         TacoResource::class.java) {
 
-    override fun instantiateResource(entity: Taco) = TacoResource.from(entity)
+    override fun instantiateModel(entity: Taco) = TacoResource.from(entity)
 
-    override fun toResource(entity: Taco) = createResourceWithId(entity.id, entity)
+    override fun toModel(entity: Taco) = createModelWithId(entity.id, entity)
 }
 
 @Relation(value = "taco", collectionRelation = "tacos")
@@ -46,14 +46,14 @@ data class TacoResource(
         val id: Long,
         val name: String,
         val createdAt: Date?,
-        val ingredients: List<IngredientResource>
-) : ResourceSupport() {
+        val ingredients: CollectionModel<IngredientResource>
+) : RepresentationModel<TacoResource>() {
     companion object {
         val tacoResourceAssembler = TacoResourceAssembler()
         fun from(taco: Taco) = TacoResource(taco.id,
                 taco.name,
                 taco.createdAt,
-                IngredientResource.ingredientAssembler.toResources(taco.ingredients))
+                IngredientResource.ingredientAssembler.toCollectionModel(taco.ingredients))
     }
 }
 
@@ -61,7 +61,7 @@ data class IngredientResource(
         val id: String,
         val name: String,
         val type: Ingredient.Type
-) : ResourceSupport() {
+) : RepresentationModel<IngredientResource>() {
     companion object {
         val ingredientAssembler = IngredientResourceAssembler()
         fun from(ingredient: Ingredient) = IngredientResource(ingredient.id,
@@ -70,10 +70,11 @@ data class IngredientResource(
     }
 }
 
-class IngredientResourceAssembler : ResourceAssemblerSupport<Ingredient, IngredientResource>(
+class IngredientResourceAssembler : RepresentationModelAssemblerSupport<Ingredient, IngredientResource>(
         IngredientApiController::class.java, IngredientResource::class.java) {
-    override fun instantiateResource(entity: Ingredient) = IngredientResource.from(entity)
 
-    override fun toResource(entity: Ingredient) = createResourceWithId(entity.id, entity)
+    override fun instantiateModel(entity: Ingredient) = IngredientResource.from(entity)
+
+    override fun toModel(entity: Ingredient) = createModelWithId(entity.id, entity)
 }
 

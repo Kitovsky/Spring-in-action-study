@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
 @ExtendWith(SpringExtension::class)
-@WebMvcTest(secure = false)
+@WebMvcTest(/*secure = false*/)
 internal class HomeControllerTest : AbstractControllerTest() {
 
     @Autowired

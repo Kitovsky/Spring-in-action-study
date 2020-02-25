@@ -4,8 +4,8 @@ import kit.tacos.domain.Ingredient
 import kit.tacos.domain.Taco
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
+import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.MediaTypes
-import org.springframework.hateoas.Resources
 import org.springframework.hateoas.client.Traverson
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,7 +25,7 @@ class TraversonTestController(
     fun testIngredients(): Any {
         val ingredientRes = traverson
                 .follow("ingredients")
-                .toObject(typeReference<Resources<Ingredient>>())
+                .toObject(typeReference<CollectionModel<Ingredient>>())
         return ingredientRes.content
     }
 
@@ -33,7 +33,7 @@ class TraversonTestController(
     fun testTacos(): Any {
         val ingredientRes = traverson
                 .follow("tacos")
-                .toObject(typeReference<Resources<Taco>>())
+                .toObject(typeReference<CollectionModel<Taco>>())
         return ingredientRes.content
     }
 
